@@ -44,11 +44,11 @@ if __name__ == "__main__":
     
     # 1. Tạo ma trận dummy (mô phỏng TF-IDF)
     X_dummy, y_dummy = make_classification(
-        n_samples=500, n_features=100, n_classes=3, n_informative=10, random_state=42
+        n_samples=500, n_features=100, n_classes=4, n_informative=10, random_state=42
     )
 
     X_dummy = np.abs(X_dummy)
-    
+
     X_train, X_test, y_train, y_test = train_test_split(
         X_dummy, y_dummy, test_size=0.2, random_state=42
     )
