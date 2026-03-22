@@ -1,4 +1,7 @@
 #module/metrics.py
+from dataclasses import dataclass
+from typing import Dict, Any
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import os
 from dataclasses import dataclass
 from typing import Dict, Any, List
@@ -38,6 +41,7 @@ def print_result(result: EvalResult) -> Dict[str, Any]:
         "precision_weighted": result.precision_weighted,
         "recall_weighted": result.recall_weighted,
         "f1_weighted": result.f1_weighted
+    }
     }
 
 def plot_confusion_matrix(y_true, y_pred, class_names: List[str], save_path: str, title: str = "Confusion Matrix"):

@@ -15,9 +15,7 @@ Text classification pipeline: EDA → TF-IDF &amp; BERT/SBERT embeddings → tra
     ├── features/
     │   ├── tfidf/
     │   └── bert/
-    │
-    ├── models/
-    │
+    │   
     ├── results/
     │   ├── figures/
     │   ├── tables/
