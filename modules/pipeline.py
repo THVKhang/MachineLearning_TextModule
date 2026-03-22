@@ -1,9 +1,11 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from IPython.display import display
 from sklearn.metrics import ConfusionMatrixDisplay
 from modules.tfidf_features import build_tfidf_features, save_features_npy
 from modules.bert_embed import EmbedConfig, get_or_build_embeddings
 from modules.train_classical import train_eval_logreg, pretty_print_result
+from modules.bert_embed import EmbedConfig, get_or_build_embeddings
 import os
 def build_features(cfg, train_texts, test_texts):
 

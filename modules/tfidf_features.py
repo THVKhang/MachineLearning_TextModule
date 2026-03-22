@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
-
+from typing import cast
+from scipy.sparse import csr_matrix
 class TFIDFExtractor:
     def __init__(self, max_features=None, ngram_range=(1, 1)):
         # Khởi tạo TF-IDF Vectorizer
