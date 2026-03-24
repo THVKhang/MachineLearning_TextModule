@@ -93,6 +93,24 @@ def build_features(cfg, train_texts, test_texts):
             rebuild=False
         )
 
+        # If cached embeddings were generated with a different slice size,
+        # force rebuild so train/test rows always match current mode.
+        if emb_train.shape[0] != N_train or emb_test.shape[0] != N_test:
+            print(
+                "Cached SBERT shape mismatch "
+                f"(cached train/test={emb_train.shape[0]}/{emb_test.shape[0]}, "
+                f"expected={N_train}/{N_test}) -> rebuilding..."
+            )
+            emb_train, emb_test, p_train, p_test = get_or_build_embeddings(
+                train_texts,
+                test_texts,
+                feature_dir=str(cfg.bert_dir),
+                train_name=cfg.bert_train_name,
+                test_name=cfg.bert_test_name,
+                cfg=emb_cfg,
+                rebuild=True,
+            )
+
         print("SBERT embeddings saved:")
         print(p_train, p_test)
 

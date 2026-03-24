@@ -9,3 +9,4 @@ matplotlib
 seaborn
 tqdm
 nltk
+pytest

@@ -3,7 +3,7 @@ import numpy as np
 from modules.data_loader import load_data
 from modules.text_preprocess import TextCleaner
 from modules.tfidf_features import build_tfidf_features, save_features_npy
-from modules.train_classical import train_eval
+from modules.train_classical import get_model, train_eval
 from modules.metrics import print_result
 
 def clean_large_corpus(cleaner, corpus, batch_print=20000):
@@ -45,9 +45,6 @@ def main():
         {"name": "Cấu hình 3 (Unigram+Bigram, 5k features)", "max_features": 5000, "ngram_range": (1, 2)},
     ]
 
-    # Các class của tập ag_news để cung cấp cho hàm train_eval vẽ Confusion Matrix
-    ag_news_classes = ["World", "Sports", "Business", "Sci/Tech"]
-    
     best_f1 = 0.0
     best_config_name = ""
     best_X_train = None
@@ -63,13 +60,13 @@ def main():
             min_df=3
         )
         
-        # Gọi hàm train_eval theo ĐÚNG thiết kế mới của đồng đội
+        model = get_model("logistic_regression", max_iter=500)
         result = train_eval(
-            model_type="logistic_regression",
-            X_train=X_train, y_train=y_train,
-            X_test=X_test, y_test=y_test,
-            class_names=ag_news_classes,
-            save="results"
+            model=model,
+            X_train=X_train,
+            y_train=y_train,
+            X_test=X_test,
+            y_test=y_test,
         )
         
         metrics_dict = print_result(result)

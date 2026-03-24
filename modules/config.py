@@ -74,7 +74,7 @@ class Config:
     # ---------- Paths (same as before) ----------
     @property
     def project_root(self) -> Path:
-        return Path(__file__).resolve().parent
+        return Path(__file__).resolve().parent.parent
     @property
     def data_dir(self) -> Path:
         return self.project_root / "data"

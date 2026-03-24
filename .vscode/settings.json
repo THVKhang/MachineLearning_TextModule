@@ -1,4 +1,5 @@
 {
+    "python.defaultInterpreterPath": "c:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\.venv\\Scripts\\python.exe",
     "python.testing.unittestArgs": [
         "-v",
         "-s",
