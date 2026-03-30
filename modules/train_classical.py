@@ -8,16 +8,14 @@ from sklearn.svm import LinearSVC
 from sklearn.model_selection import GridSearchCV
 from modules.metrics import calculate_metrics, EvalResult, print_result, plot_confusion_matrix
 
-def get_model(model_type: str, C: float = 1.0, alpha: float = 1.0, max_iter: int = 500) -> BaseEstimator:
-    """
-    Factory pattern để người làm Pipeline/Config dễ dàng đổi mô hình.
-    """
+def get_model(model_type: str, C: float = 1.0, alpha: float = 1.0, max_iter: int = 500, random_state: int = 42) -> BaseEstimator:
+
     if model_type == "logistic_regression":
-        return LogisticRegression(C=C, max_iter=max_iter)
+        return LogisticRegression(C=C, max_iter=max_iter, random_state=random_state)
     elif model_type == "naive_bayes":
         return MultinomialNB(alpha=alpha)
     elif model_type == "svm":
-        return LinearSVC(C=C, max_iter=max_iter, dual=False)
+        return LinearSVC(C=C, max_iter=max_iter, dual=False, random_state=random_state)
     else:
         raise ValueError(f"Unsupported model type: {model_type}")
     
