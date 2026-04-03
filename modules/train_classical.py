@@ -1,6 +1,7 @@
 # modules/train_classical.py
 import numpy as np
 import os
+import joblib
 from sklearn.base import BaseEstimator
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
@@ -75,7 +76,8 @@ def train_eval_with_tuning(
     X_test: np.ndarray,
     y_test: np.ndarray,
     class_names: list,
-    save: str = "results"
+    save: str = "results",
+    model_save: str = "models"
 ) -> EvalResult:
     """
     Hàm thực hiện Tuning nhẹ, dự đoán và xuất Confusion Matrix.
@@ -95,6 +97,11 @@ def train_eval_with_tuning(
     grid_search.fit(X_train, y_train)
     best_model = grid_search.best_estimator_
     print(f"Tham số tốt nhất tìm được: {grid_search.best_params_}")
+
+    os.makedirs(model_save, exist_ok=True)
+    model_save_path = os.path.join(model_save, f"{model_type}_best.pkl")
+    joblib.dump(best_model, model_save_path)
+    print(f"Đã lưu mô hình tại: {model_save_path}")
 
     # 3. Dự đoán trên tập Test
     y_pred = best_model.predict(X_test)
