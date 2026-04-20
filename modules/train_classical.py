@@ -1,6 +1,7 @@
 # modules/train_classical.py
 import numpy as np
 import os
+import joblib
 from sklearn.base import BaseEstimator
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
@@ -8,16 +9,14 @@ from sklearn.svm import LinearSVC
 from sklearn.model_selection import GridSearchCV
 from modules.metrics import calculate_metrics, EvalResult, print_result, plot_confusion_matrix
 
-def get_model(model_type: str, C: float = 1.0, alpha: float = 1.0, max_iter: int = 500) -> BaseEstimator:
-    """
-    Factory pattern để người làm Pipeline/Config dễ dàng đổi mô hình.
-    """
+def get_model(model_type: str, C: float = 1.0, alpha: float = 1.0, max_iter: int = 500, random_state: int = 42) -> BaseEstimator:
+
     if model_type == "logistic_regression":
-        return LogisticRegression(C=C, max_iter=max_iter)
+        return LogisticRegression(C=C, max_iter=max_iter, random_state=random_state)
     elif model_type == "naive_bayes":
         return MultinomialNB(alpha=alpha)
     elif model_type == "svm":
-        return LinearSVC(C=C, max_iter=max_iter, dual=False)
+        return LinearSVC(C=C, max_iter=max_iter, dual=False, random_state=random_state)
     else:
         raise ValueError(f"Unsupported model type: {model_type}")
     
@@ -75,7 +74,8 @@ def train_eval_with_tuning(
     X_test: np.ndarray,
     y_test: np.ndarray,
     class_names: list,
-    save: str = "results"
+    save: str = "results",
+    model_save: str = "models"
 ) -> EvalResult:
     """
     Hàm thực hiện Tuning nhẹ, dự đoán và xuất Confusion Matrix.
@@ -95,6 +95,11 @@ def train_eval_with_tuning(
     grid_search.fit(X_train, y_train)
     best_model = grid_search.best_estimator_
     print(f"Tham số tốt nhất tìm được: {grid_search.best_params_}")
+
+    os.makedirs(model_save, exist_ok=True)
+    model_save_path = os.path.join(model_save, f"{model_type}_best.pkl")
+    joblib.dump(best_model, model_save_path)
+    print(f"Đã lưu mô hình tại: {model_save_path}")
 
     # 3. Dự đoán trên tập Test
     y_pred = best_model.predict(X_test)
