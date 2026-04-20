@@ -8,9 +8,11 @@ trains baseline classifiers, and saves a benchmark report.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 import time
 from collections import defaultdict
+import shutil
 from pathlib import Path
 from typing import Any
 
@@ -44,10 +46,19 @@ def parse_args() -> argparse.Namespace:
         default=["5k_2k", "20k_2k"],
         help="Benchmark scales to run. Choices: 5k_2k, 20k_2k",
     )
+    parser.add_argument(
+        "--models",
+        nargs="+",
+        default=None,
+        help="Optional model list to train (default: logistic_regression svm naive_bayes)",
+    )
     return parser.parse_args()
 
 
-def main(scales: list[str] | None = None) -> None:
+def run_embedding_benchmark(
+    scales: list[str] | None = None,
+    model_list: list[str] | None = None,
+) -> dict[str, object]:
     print("\n" + "=" * 80)
     print(" " * 20 + "BERT EMBEDDING BENCHMARK")
     print("=" * 80)
@@ -137,6 +148,12 @@ def main(scales: list[str] | None = None) -> None:
         np.save(bench_dir / "labels_train.npy", emb_data["train_labels"])
         np.save(bench_dir / "labels_test.npy", emb_data["test_labels"])
 
+        # Backward-compatible canonical symlinks/copies for the latest benchmark run.
+        latest_dir = cfg.bert_dir / "latest"
+        latest_dir.mkdir(parents=True, exist_ok=True)
+        for name in ["bert_train.npy", "bert_test.npy", "labels_train.npy", "labels_test.npy"]:
+            shutil.copyfile(bench_dir / name, latest_dir / name)
+
         print(f"  saved: {bench_dir}")
 
     print("\n" + "-" * 80)
@@ -148,6 +165,11 @@ def main(scales: list[str] | None = None) -> None:
         "svm": {"C": 1.0, "max_iter": 300},
         "naive_bayes": {"alpha": 1.0},
     }
+    if model_list is not None:
+        allowed = set(model_list)
+        model_configs = {name: kwargs for name, kwargs in model_configs.items() if name in allowed}
+        if not model_configs:
+            raise ValueError("No valid embedding model selected.")
 
     eval_results: dict[str, dict[str, dict[str, float]]] = defaultdict(dict)
 
@@ -265,14 +287,56 @@ def main(scales: list[str] | None = None) -> None:
     report_path = cfg.table_dir / "bert_benchmark_results.csv"
     df.to_csv(report_path, index=False)
 
+    summary_path = cfg.table_dir / "bert_benchmark_summary.csv"
+    summary_rows = []
+    for bench_name, metrics_by_model in eval_results.items():
+        best_model = max(metrics_by_model.items(), key=lambda item: item[1]["f1"])
+        summary_rows.append(
+            {
+                "Dataset": bench_name,
+                "Best Model": best_model[0],
+                "Best Accuracy": best_model[1]["accuracy"],
+                "Best Precision": best_model[1]["precision"],
+                "Best Recall": best_model[1]["recall"],
+                "Best F1": best_model[1]["f1"],
+                "Embedding Time (s)": timing_results[bench_name]["embed_time"],
+                "Samples": timing_results[bench_name]["n_samples"],
+            }
+        )
+    pd.DataFrame(summary_rows).to_csv(summary_path, index=False)
+
     print(f"Report saved to: {report_path}")
+    print(f"Summary saved to: {summary_path}")
     print("\n" + df.to_string(index=False))
+
+    best_idx = df["F1-Score"].astype(float).idxmax()
+    best_row = df.loc[best_idx].to_dict()
+
+    run_meta: dict[str, object] = {
+        "runner": "embedding",
+        "scales": list(bench_sizes.keys()),
+        "models": list(model_configs.keys()),
+        "best_model": str(best_row["Model"]),
+        "best_scale": str(best_row["Dataset"]),
+        "best_primary_metric": float(best_row["F1-Score"]),
+        "table_path": str(report_path),
+        "summary_path": str(summary_path),
+    }
+    cfg.log_dir.mkdir(parents=True, exist_ok=True)
+    log_path = cfg.log_dir / "embedding_runner_last.json"
+    log_path.write_text(json.dumps(run_meta, indent=2), encoding="utf-8")
+    run_meta["log_path"] = str(log_path)
 
     print("\n" + "=" * 80)
     print("BENCHMARK COMPLETE")
     print("=" * 80)
+    return run_meta
+
+
+def main(scales: list[str] | None = None, model_list: list[str] | None = None) -> None:
+    run_embedding_benchmark(scales=scales, model_list=model_list)
 
 
 if __name__ == "__main__":
     cli_args = parse_args()
-    main(scales=cli_args.scales)
+    main(scales=cli_args.scales, model_list=cli_args.models)

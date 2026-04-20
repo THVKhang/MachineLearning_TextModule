@@ -1,0 +1,84 @@
+{
+  "objective": "best",
+  "plan": {
+    "objective": "best",
+    "mode": "full",
+    "feature_family": "tfidf+embedding",
+    "model_family": "classical",
+    "recommended_feature_config": "tfidf_uni_bi_5k + sbert/all-MiniLM-L6-v2",
+    "recommended_model": "logistic_regression",
+    "benchmark_scales": "5k_2k, 20k_2k",
+    "primary_metric": "f1_weighted",
+    "notes": "Run full benchmark coverage, compare both feature families, and finalize the report-ready recommendation."
+  },
+  "tfidf_run": {
+    "runner": "tfidf",
+    "mode": "full",
+    "selected_config": "tfidf_uni_bi_5k",
+    "candidate_configs": [
+      "tfidf_uni_bi_5k"
+    ],
+    "models": [
+      "logistic_regression",
+      "svm",
+      "naive_bayes"
+    ],
+    "primary_metric": "f1_weighted",
+    "best_model": "svm",
+    "best_primary_metric": 0.904417,
+    "table_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\tfidf_model_comparison.csv",
+    "artifact_paths": [
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\figures\\cm_logistic_regression.png",
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_logistic_regression.png",
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\figures\\cm_svm.png",
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_svm.png",
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\figures\\cm_naive_bayes.png",
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_naive_bayes.png"
+    ],
+    "log_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\logs\\tfidf_runner_last.json"
+  },
+  "embedding_run": {
+    "runner": "embedding",
+    "scales": [
+      "5k_2k",
+      "20k_2k"
+    ],
+    "models": [
+      "logistic_regression",
+      "svm",
+      "naive_bayes"
+    ],
+    "best_model": "svm",
+    "best_scale": "20k_2k",
+    "best_primary_metric": 0.8954,
+    "table_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\bert_benchmark_results.csv",
+    "summary_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\bert_benchmark_summary.csv",
+    "log_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\logs\\embedding_runner_last.json"
+  },
+  "critic": {
+    "status": "pass",
+    "primary_metric": "f1_weighted",
+    "threshold": 0.87,
+    "best_family": "tfidf",
+    "best_model": "svm",
+    "best_metric": 0.904417,
+    "findings": [],
+    "checked_files": [
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\tfidf_model_comparison.csv",
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\bert_benchmark_results.csv",
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\feature_family_comparison.csv",
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_logistic_regression.png",
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_svm.png",
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_naive_bayes.png"
+    ],
+    "report_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\logs\\critic_report.json"
+  },
+  "reporter": {
+    "summary_markdown": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\reports\\agency_summary.md",
+    "summary_json": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\reports\\agency_summary.json",
+    "recommendation": "Use current best model for final report."
+  },
+  "comparison_table": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\feature_family_comparison.csv",
+  "comparison_table_full": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\feature_family_comparison_full.csv",
+  "archived_legacy_paths": []
+}

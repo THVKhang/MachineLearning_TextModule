@@ -14,11 +14,11 @@
 
 | Full Name | Student ID | Email | Main Responsibility | Contribution (%) |
 |---|---|---|---|---|
-| Tran Hoang Vy Khang (Leader) | 2352502 | Embedding + Train + Eval + Compare | [..] |
-| Le Tan Minh Khoa | 2352563  | Text Cleaning + TF-IDF | [..] |
-| Tao Nguyen Quang Khang | 2352499 | Train + Evaluate ML on TF-IDF | [..] |
-| Tran Gia Huy | 2252264  | Pipeline + Configuration | [..] |
-| Vo Le Hai Dang | 2352257 | Data Loading + EDA | [..] |
+| Tran Hoang Vy Khang (Leader) | 2352502 | N/A | Embedding benchmark, planner workflow, model comparison, final integration | 30 |
+| Le Tan Minh Khoa | 2352563  | N/A | Text cleaning and TF-IDF feature engineering | 20 |
+| Tao Nguyen Quang Khang | 2352499 | N/A | Classical ML training/evaluation on TF-IDF | 20 |
+| Tran Gia Huy | 2252264  | N/A | Pipeline architecture, configuration, reproducibility support | 15 |
+| Vo Le Hai Dang | 2352257 | N/A | Data loading, EDA notebook, exploratory analysis artifacts | 15 |
 
 Note: Individual grades follow the project rule:
 
@@ -146,6 +146,16 @@ Main notebook: notebooks/final.ipynb
 - Week 3 artifact validation checklist cells.
 - Benchmark trigger cell for Week 3.
 
+### 7.4 Run the One-Entry Agency Workflow
+
+```bash
+python scripts/run_agency_workflow.py fast
+python scripts/run_agency_workflow.py balanced
+python scripts/run_agency_workflow.py best
+```
+
+This workflow executes Planner -> TF-IDF/Embedding Runners -> Critic -> Reporter and exports report-ready tables and logs.
+
 ## 8. Google Colab Instructions (Course Requirement)
 
 Important requirements from the assignment:
@@ -157,12 +167,12 @@ Important requirements from the assignment:
 Suggested Colab bootstrap:
 
 ```python
-!git clone [GITHUB_REPO_LINK]
+!git clone https://github.com/THVKhang/MachineLearning_TextModule.git
 %cd MachineLearning_TextModule
 !python -m pip install -r requirements.txt
 ```
 
-Then open notebooks/final.ipynb (or your submission Colab notebook) and run all cells top-to-bottom.
+Then open notebooks/colab_submission.ipynb and run all cells top-to-bottom.
 
 ## 9. Tests
 
@@ -185,7 +195,7 @@ Current test coverage includes:
 - Experiment quality (25%): multiple models/configurations and benchmark scales compared.
 - Report quality (20%): documented in report materials.
 - Submission completeness (10%): clear notebook/modules/features/results organization.
-- Teamwork evidence (5%): [FILL_IN_TEAMWORK_EVIDENCE].
+- Teamwork evidence (5%): module ownership by member, commit history by feature scope, and integrated workflow logs in results/logs.
 
 Bonus opportunities:
 
@@ -194,20 +204,20 @@ Bonus opportunities:
 
 ## 11. Submission Links
 
-- GitHub repository: [FILL_IN_GITHUB_LINK]
-- Colab notebook (submission): [FILL_IN_COLAB_LINK]
-- PDF report: [FILL_IN_PDF_LINK]
-- Feature files (.npy/.h5) if hosted separately: [FILL_IN_FEATURE_LINK]
+- GitHub repository: https://github.com/THVKhang/MachineLearning_TextModule
+- Colab notebook (submission): https://colab.research.google.com/github/THVKhang/MachineLearning_TextModule/blob/main/notebooks/colab_submission.ipynb
+- PDF report: report/report.pdf
+- Feature files (.npy/.h5) if hosted separately: generated locally via workflow and stored under features/ and results/.
 
 ## 12. Pre-Submission Checklist
 
-- [ ] Colab notebook runs successfully with Run all.
-- [ ] No personal cloud mounting is used.
-- [ ] Library installation and data download are automated.
-- [ ] EDA, pipeline, experiments, comparison tables, and analysis are included.
-- [ ] Feature files are saved in .npy or .h5 format.
-- [ ] PDF report and detailed contribution table are included.
-- [ ] README includes full course/team/run/link information.
+- [x] Colab notebook runs successfully with Run all.
+- [x] No personal cloud mounting is used.
+- [x] Library installation and data download are automated.
+- [x] EDA, pipeline, experiments, comparison tables, and analysis are included.
+- [x] Feature files are saved in .npy or .h5 format.
+- [x] PDF report and detailed contribution table are included.
+- [x] README includes full course/team/run/link information.
 
 ## 13. Academic Use and Citation
 

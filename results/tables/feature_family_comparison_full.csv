@@ -1,0 +1,4 @@
+feature_family,benchmark_type,benchmark_scale,model,train_size,test_size,feature_dim,accuracy,precision,recall,f1,train_time_sec,embed_time_sec,comparison_note
+tfidf,tfidf_config,tfidf_uni_bi_5k,svm,120000,7600,,0.904605,0.904444,0.904605,0.904417,16.8284,,best TF-IDF config
+embedding,embedding_scale,20k_2k,svm,20000,2000,384,0.8955,0.8958,0.8955,0.8954,6.61017632484436,276.7129602432251,best embedding model per scale
+embedding,embedding_scale,5k_2k,logistic_regression,5000,2000,384,0.874,0.8734,0.874,0.8736,8.569507122039795,111.86500883102416,best embedding model per scale

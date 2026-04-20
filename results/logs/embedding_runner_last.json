@@ -1,0 +1,17 @@
+{
+  "runner": "embedding",
+  "scales": [
+    "5k_2k",
+    "20k_2k"
+  ],
+  "models": [
+    "logistic_regression",
+    "svm",
+    "naive_bayes"
+  ],
+  "best_model": "svm",
+  "best_scale": "20k_2k",
+  "best_primary_metric": 0.8954,
+  "table_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\bert_benchmark_results.csv",
+  "summary_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\bert_benchmark_summary.csv"
+}

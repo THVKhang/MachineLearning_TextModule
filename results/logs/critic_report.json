@@ -1,0 +1,17 @@
+{
+  "status": "pass",
+  "primary_metric": "f1_weighted",
+  "threshold": 0.87,
+  "best_family": "tfidf",
+  "best_model": "svm",
+  "best_metric": 0.904417,
+  "findings": [],
+  "checked_files": [
+    "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\tfidf_model_comparison.csv",
+    "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\bert_benchmark_results.csv",
+    "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\feature_family_comparison.csv",
+    "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_logistic_regression.png",
+    "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_svm.png",
+    "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_naive_bayes.png"
+  ]
+}

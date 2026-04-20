@@ -1,130 +1,165 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                           PREAMBLE                                 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[a4paper,12pt]{article}
 
-%---------- LANGUAGE & FONT SUPPORT ----------%
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[vietnamese,english]{babel} % Thêm tiếng Việt cho báo cáo
-\usepackage{mathptmx}
-\usepackage{inconsolata}
-
-%---------- COMMON PACKAGES ----------%
-\usepackage{float}
+\usepackage[english]{babel}
 \usepackage{geometry}
-\geometry{a4paper, total={170mm,257mm}, left=20mm, top=20mm, includefoot}
-\usepackage{amsmath,amssymb,amsthm}
+\geometry{a4paper, margin=1in}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,tabularx}
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{hyperref}
-\usepackage{booktabs,makecell,tabularx}
-\usepackage{caption}
-\usepackage{fancyhdr}
-\usepackage{lastpage}
-\usepackage{listings}
-\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{longtable}
 
-%---------- HEADER & FOOTER ----------%
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[L]{\small \textbf{Trường Đại học Bách Khoa - ĐHQG-HCM} \\ \textbf{Khoa Khoa học và Kỹ thuật Máy tính}}
-\fancyfoot[L]{\scriptsize \ttfamily Bài tập lớn Học máy - Học kỳ I 2025-2026}
-\fancyfoot[R]{\scriptsize \ttfamily Trang \thepage/\pageref{LastPage}}
+\title{Machine Learning Course Project Report\\Text Classification on AG News}
+\author{
+Tran Hoang Vy Khang (2352502)\\
+Le Tan Minh Khoa (2352563)\\
+Tao Nguyen Quang Khang (2352499)\\
+Tran Gia Huy (2252264)\\
+Vo Le Hai Dang (2352257)
+}
+\date{Semester I, 2025--2026}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                          DOCUMENT BODY                             %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-%---------- TITLE PAGE ----------%
-\begin{titlepage}
-  \begin{center}
-    \vspace*{6mm}
-    \textbf{ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH}\\
-    \textbf{TRƯỜNG ĐẠI HỌC BÁCH KHOA}\\
-    \textbf{KHOA KHOA HỌC VÀ KỸ THUẬT MÁY TÍNH}
-    \vspace{15mm}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=40mm]{Image/hcmut.jpg} % Đảm bảo bạn có file này
-    \end{figure}
-    \vspace{15mm}
+\maketitle
 
-    {\Large \bfseries BÁO CÁO BÀI TẬP LỚN MÔN HỌC MÁY} \\
-    \vspace{1cm}
-    \rule{\linewidth}{1pt} \\[0.4cm]
-    {\huge \bfseries Phân loại văn bản Tiếng Việt: \\ Từ ML truyền thống đến Deep Learning} \\[0.4cm]
-    \rule{\linewidth}{1pt} \\
-    
-    \vspace{15mm}
-    \begin{tabular}{ll}
-        \textbf{Giảng viên hướng dẫn:} & TS. Lê Thành Sách \\
-        \textbf{Nhóm:} & [Tên nhóm của Khang] \\
-        \addlinespace[10pt]
-        \multicolumn{2}{l}{\textbf{Thành viên thực hiện:}} \\
-        Trần Hoàng Vỹ Khang (Leader) & 2352502 \\
-        Lê Tấn Minh Khoa & 2352563 \\
-        Tào Nguyễn Quang Khang & 2352499 \\
-        Trần Gia Huy & 2252264 \\
-        Võ Lê Hải Đăng & 2352257 \\
-    \end{tabular}
-
-    \vfill
-    {\large Thành phố Hồ Chí Minh, Tháng 3/2026}
-  \end{center}
-\end{titlepage}
-
-\tableofcontents
-\newpage
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                      PHẦN 1: GIỚI THIỆU                            %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Giới thiệu (Introduction)}
-\subsection{Mục tiêu dự án}
-Phần này trình bày mục tiêu xây dựng hệ thống phân loại văn bản (Text Classification) dựa trên các yêu cầu của môn học[cite: 51]. Khang nên nêu rõ bài toán đang giải quyết là gì (ví dụ: phân loại tin tức, phân tích cảm xúc).
-
-\subsection{Tổng quan về dữ liệu và EDA}
-Báo cáo kết quả phân tích dữ liệu khám phá (Exploratory Data Analysis - EDA), một yêu cầu bắt buộc của thầy Sách[cite: 63].
-\begin{itemize}
-    \item Thống kê số lượng mẫu và các nhãn dữ liệu[cite: 95].
-    \item Trực quan hóa phân phối độ dài văn bản (Image 1: Distribution Plot).
-    \item Thống kê tần suất từ (Image 2: WordCloud hoặc Bar Chart).
+\section{Course Context}
+\begin{itemize}[leftmargin=*]
+    \item Course: Machine Learning (CO3117)
+    \item Department: Computer Science and Engineering, HCMUT -- VNU-HCM
+    \item Supervisor: Dr. Le Thanh Sach
+    \item Topic: Text Data Classification (Topic 2)
 \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                  PHẦN 2: MACHINE LEARNING TRUYỀN THỐNG             %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Machine Learning truyền thống (Traditional Pipeline)}
-Đây là trọng tâm chiếm 40\% số điểm của bài tập lớn[cite: 145].
+\section{Project Objectives}
+The project aims to build a complete text classification pipeline from exploratory data analysis to final model comparison, following the required workflow:
+\begin{enumerate}[leftmargin=*]
+    \item EDA and data understanding.
+    \item Configurable preprocessing and TF-IDF feature extraction.
+    \item Classical ML training and evaluation (Logistic Regression, SVM, Naive Bayes).
+    \item Modern embedding extension with SBERT.
+    \item Comparison across feature families with report-ready artifacts.
+\end{enumerate}
 
-\subsection{Tiền xử lý văn bản (Preprocessing)}
-Mô tả quy trình làm sạch dữ liệu: loại bỏ ký tự đặc biệt, stopword và kỹ thuật tách từ (Tokenization) cho Tiếng Việt[cite: 94].
+\section{Dataset and Problem Setting}
+\begin{itemize}[leftmargin=*]
+    \item Dataset: \texttt{ag\_news} from Hugging Face Datasets.
+    \item Task: 4-class news topic classification.
+    \item Split used in full mode: 120,000 training samples and 7,600 test samples.
+\end{itemize}
 
-\subsection{Trích xuất đặc trưng (Feature Extraction)}
-Trình bày về phương pháp \textbf{TF-IDF} hoặc \textbf{Bag-of-Words} đã triển khai[cite: 88].
+\section{Implemented Methodology}
+\subsection{Traditional Pipeline}
+\begin{itemize}[leftmargin=*]
+    \item Preprocessing options: lowercasing, stopword removal, punctuation removal, number removal.
+    \item TF-IDF configuration search over three candidates:
+    \begin{itemize}
+        \item \texttt{tfidf\_uni\_1k}
+        \item \texttt{tfidf\_uni\_bi\_3k}
+        \item \texttt{tfidf\_uni\_bi\_5k}
+    \end{itemize}
+    \item Primary model-selection metric: F1-weighted.
+    \item Trained models: Logistic Regression, SVM, Naive Bayes.
+\end{itemize}
+
+\subsection{Modern Embedding Extension}
+\begin{itemize}[leftmargin=*]
+    \item Embedding model: \texttt{sentence-transformers/all-MiniLM-L6-v2}.
+    \item Benchmark scales: \texttt{5k\_2k} and \texttt{20k\_2k}.
+    \item Embeddings and labels are exported to \texttt{.npy} artifacts.
+\end{itemize}
+
+\section{Engineering Workflow Integration}
+A one-entry workflow was implemented to improve reproducibility:
+\begin{itemize}[leftmargin=*]
+    \item Planner chooses objective-specific strategy (fast, balanced, best).
+    \item Runners execute TF-IDF and embedding branches.
+    \item Critic validates quality thresholds, required scales, and artifacts.
+    \item Reporter generates concise recommendation outputs.
+\end{itemize}
+
+\section{Results}
+\subsection{Best TF-IDF Results (Full Data)}
+\begin{table}[H]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Model & Accuracy & Precision (w) & Recall (w) & F1 (w) \\
+\midrule
+SVM & 0.9046 & 0.9044 & 0.9046 & 0.9044 \\
+Logistic Regression & 0.9038 & 0.9036 & 0.9038 & 0.9036 \\
+Naive Bayes & 0.8871 & 0.8866 & 0.8871 & 0.8867 \\
+\bottomrule
+\end{tabular}
+\caption{TF-IDF model comparison from \texttt{results/tables/tfidf\_model\_comparison.csv}.}
+\end{table}
+
+\subsection{SBERT Benchmark Results}
+\begin{table}[H]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+Scale & Best Model & Accuracy & Precision (w) & Recall (w) & F1 (w) \\
+\midrule
+5k\_2k & Logistic Regression & 0.8740 & 0.8734 & 0.8740 & 0.8736 \\
+20k\_2k & SVM & 0.8955 & 0.8958 & 0.8955 & 0.8954 \\
+\bottomrule
+\end{tabular}
+\caption{Best embedding model per scale from \texttt{results/tables/bert\_benchmark\_summary.csv}.}
+\end{table}
+
+\subsection{Feature-Family Comparison}
+The final comparison between best TF-IDF and best embedding model shows:
+\begin{itemize}[leftmargin=*]
+    \item Best TF-IDF: SVM with F1-weighted = 0.9044.
+    \item Best embedding: SVM at 20k\_2k with F1 = 0.8954.
+\end{itemize}
+Therefore, TF-IDF + SVM is selected as the final recommendation for this dataset and setup.
+
+\section{Artifact Outputs}
+The project exports reproducible artifacts under \texttt{features/} and \texttt{results/}, including:
+\begin{itemize}[leftmargin=*]
+    \item Feature arrays (TF-IDF and SBERT) in \texttt{.npy} format.
+    \item Confusion matrices for all TF-IDF models.
+    \item Benchmark and comparison CSV tables.
+    \item Workflow logs, critic report, and reporter summary.
+\end{itemize}
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{Image/tfidf_pipeline.png}
-    \caption{Quy trình trích xuất đặc trưng truyền thống.}
+    \includegraphics[width=0.65\linewidth]{../results/figures/cm_svm.png}
+    \caption{Confusion matrix of best TF-IDF model (SVM).}
 \end{figure}
 
-\subsection{Huấn luyện và Đánh giá}
-Kết quả của 3 mô hình (SVM, Naive Bayes, Logistic Regression) và bảng so sánh các chỉ số Accuracy, Precision, Recall, F1-score[cite: 40].
+\section{Team Contributions}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{l c X c}
+\toprule
+Member & ID & Main Contribution & \% \\
+\midrule
+Tran Hoang Vy Khang & 2352502 & Embedding benchmark, integrated workflow, final comparison and outputs & 30 \\
+Le Tan Minh Khoa & 2352563 & Text cleaning and TF-IDF feature engineering & 20 \\
+Tao Nguyen Quang Khang & 2352499 & Classical model training and evaluation on TF-IDF & 20 \\
+Tran Gia Huy & 2252264 & Pipeline/configuration support and reproducibility structure & 15 \\
+Vo Le Hai Dang & 2352257 & Data loading and EDA notebook analysis & 15 \\
+\bottomrule
+\end{tabularx}
+\caption{Detailed contribution table (sum = 100\%).}
+\end{table}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                      PHẦN 3: DEEP LEARNING                         %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Deep Learning (Advanced Pipeline)}
-Phần mở rộng để lấy điểm thưởng (+5\%) theo tiêu chí của môn học[cite: 49, 151].
-
-\subsection{Mô hình Embedding hiện đại}
-Mô tả việc sử dụng các mô hình Transformer như \textbf{BERT} hoặc \textbf{PhoBERT} để trích xuất Contextual Embeddings[cite: 91]. Khang lưu ý đề cập đến việc lưu trữ đặc trưng dưới định dạng \texttt{.npy} hoặc \texttt{.h5}[cite: 92].
-
-\subsection{So sánh và Kết luận (Compare)}
-Phần quan trọng nhất: So sánh hiệu quả giữa Pipeline truyền thống và Deep Learning về cả độ chính xác lẫn tài nguyên tính toán (Latency, RAM).
-
-\section{Phân công công việc}
-Bảng chi tiết đóng góp của 5 thành viên và tỷ lệ hoàn thành (cần thiết để tính điểm cá nhân)[cite: 140, 141].
+\section{Conclusion}
+The required course targets were completed:
+\begin{itemize}[leftmargin=*]
+    \item Complete traditional ML pipeline implemented and validated.
+    \item Modern embedding extension benchmarked at multiple scales.
+    \item Direct TF-IDF vs embedding comparison produced.
+    \item Automated planner-runner-critic-reporter workflow built for reproducibility.
+\end{itemize}
+Final recommendation: use TF-IDF with SVM as the primary baseline for AG News in this project.
 
 \end{document}
