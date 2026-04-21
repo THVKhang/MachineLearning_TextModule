@@ -1,0 +1,9 @@
+metric,value
+Total texts,120000
+Short texts (< 20 chars),0
+Long texts (> 1000 chars),6
+Duplicate instances,0
+URL-heavy texts (>2 URLs),32
+High digit-ratio texts,0
+Empty texts,0
+Estimated noise %,0.0%

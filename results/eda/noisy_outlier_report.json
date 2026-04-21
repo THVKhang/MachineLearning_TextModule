@@ -1,0 +1,162 @@
+{
+  "summary": {
+    "total_texts": 120000,
+    "short_texts": 0,
+    "long_texts": 6,
+    "duplicates_total": 0,
+    "url_heavy": 32,
+    "high_digit_ratio": 0,
+    "empty": 0,
+    "noise_pct": 0.0
+  },
+  "short_texts": {
+    "count": 0,
+    "threshold_chars": 20,
+    "examples": []
+  },
+  "long_texts": {
+    "count": 6,
+    "threshold_chars": 1000,
+    "examples": [
+      {
+        "idx": 19776,
+        "text_preview": "Making RSS Scale   I've been meaning to write about this since I saw a one-page article on  the subject of RSS clogging websites' bandwidth in NewScientist  back in June. But it wasn't until I saw  th",
+        "char_len": 1002,
+        "label": 3,
+        "class": "Sci/Tech"
+      },
+      {
+        "idx": 93941,
+        "text_preview": "SBC switches on Microsoft in major IPTV deal Microsoft has turned the channel on its slow-moving television software business by winning a key contract for its new Internet-based TV platform from SBC ",
+        "char_len": 1001,
+        "label": 3,
+        "class": "Sci/Tech"
+      },
+      {
+        "idx": 95659,
+        "text_preview": "Yahoo, SBC extend partnership, plan new services Yahoo and SBC Communications will collaborate to extend to cell phones and home entertainment devices some of the online services and content they curr",
+        "char_len": 1012,
+        "label": 3,
+        "class": "Sci/Tech"
+      },
+      {
+        "idx": 96745,
+        "text_preview": "The top 20 IT mistakes to avoid We all like to think we learn from mistakes, whether our own or others. So in theory, the more serious bloopers you know about, the less likely you are to be under the ",
+        "char_len": 1006,
+        "label": 2,
+        "class": "Business"
+      },
+      {
+        "idx": 105792,
+        "text_preview": "IBM to market Sybase Linux database IBMand Sybasehave teamed to add support for Sybase's database software on IBM's eServer OpenPower Linux servers. The two companies said they will jointly sell and m",
+        "char_len": 1007,
+        "label": 3,
+        "class": "Sci/Tech"
+      },
+      {
+        "idx": 106486,
+        "text_preview": "Nokia earmarks millions to build new plant in India Nokia, the world's largest handset maker, is investing up to \\$150 million over the next four years to establish a manufacturing facility in India, ",
+        "char_len": 1009,
+        "label": 3,
+        "class": "Sci/Tech"
+      }
+    ]
+  },
+  "url_heavy_texts": {
+    "count": 32,
+    "examples": [
+      {
+        "idx": 1153,
+        "text_preview": "Group to Propose New High-Speed Wireless Format  LOS ANGELES (Reuters) - A group of technology companies  including Texas Instruments Inc. &lt;A HREF=\"http://www.reuters.co.uk/financeQuoteLookup.jhtml",
+        "char_len": 694,
+        "label": 3,
+        "class": "Sci/Tech",
+        "url_count": 3
+      },
+      {
+        "idx": 3813,
+        "text_preview": "Wall St. Seen Lower on Oil; Google Eyed  PARIS (Reuters) - Sky-high oil prices are likely to  pressure Wall Street once again on Thursday, while earnings  news from tech giants Ciena &lt;A HREF=\"http:",
+        "char_len": 641,
+        "label": 2,
+        "class": "Business",
+        "url_count": 3
+      },
+      {
+        "idx": 8761,
+        "text_preview": "Japan's SMFG Bids \\$29 Billion for UFJ  TOKYO (Reuters) - Sumitomo Mitsui Financial Group Inc.  &lt;A HREF=\"http://www.investor.reuters.com/FullQuote.aspx?ticker=8316.T target=/stocks/quickinfo/fullqu",
+        "char_len": 637,
+        "label": 2,
+        "class": "Business",
+        "url_count": 3
+      },
+      {
+        "idx": 12020,
+        "text_preview": "Interbrew Ambev Buy Wins Shareholder OK  BRUSSELS/SAO PAULO (Reuters) - Shareholders gave their  blessing on Friday for Belgium's Interbrew &lt;A HREF=\"http://www.investor.reuters.com/FullQuote.aspx?t",
+        "char_len": 658,
+        "label": 2,
+        "class": "Business",
+        "url_count": 3
+      },
+      {
+        "idx": 12539,
+        "text_preview": "Cable Veterans to Bid in Adelphia Auction  NEW YORK (Reuters) - Several cable industry pioneers may  bid for parts of bankrupt cable operator Adelphia  Communications Corp. &lt;A HREF=\"http://www.inve",
+        "char_len": 699,
+        "label": 2,
+        "class": "Business",
+        "url_count": 3
+      },
+      {
+        "idx": 16763,
+        "text_preview": "Joint Venture Wins Enron Pipeline Auction  NEW YORK (Reuters) - Enron Corp. &lt;A HREF=\"http://www.investor.reuters.com/FullQuote.aspx?ticker=ENRNQ.PK target=/stocks/quickinfo/fullquote\"&gt;ENRNQ.PK&l",
+        "char_len": 652,
+        "label": 2,
+        "class": "Business",
+        "url_count": 3
+      },
+      {
+        "idx": 18582,
+        "text_preview": "Report: Citigroup to Bid for Cazenove  LONDON (Reuters) - U.S. investment bank Citigroup is set to  bid for UK stockbroker Cazenove &lt;A HREF=\"http://www.investor.reuters.com/FullQuote.aspx?ticker=CA",
+        "char_len": 632,
+        "label": 2,
+        "class": "Business",
+        "url_count": 3
+      },
+      {
+        "idx": 20802,
+        "text_preview": "Laser Printers Recalled for Shock Hazard - CPSC  WASHINGTON (Reuters) - About 39,400 laser printers made by  Lexmark International Inc. &lt;A HREF=\"http://www.investor.reuters.com/FullQuote.aspx?ticke",
+        "char_len": 695,
+        "label": 2,
+        "class": "Business",
+        "url_count": 3
+      },
+      {
+        "idx": 20859,
+        "text_preview": "Laser Printers Recalled for Shock Hazard - CPSC  WASHINGTON (Reuters) - About 39,400 laser printers made by  Lexmark International Inc. &lt;A HREF=\"http://www.reuters.co.uk/financeQuoteLookup.jhtml?ti",
+        "char_len": 701,
+        "label": 3,
+        "class": "Sci/Tech",
+        "url_count": 3
+      },
+      {
+        "idx": 20861,
+        "text_preview": "Lexmark Recalls Laser Printers  WASHINGTON (Reuters) - About 39,400 laser printers made by  Lexmark International Inc. &lt;A HREF=\"http://www.reuters.co.uk/financeQuoteLookup.jhtml?ticker=LXK.N qtype=",
+        "char_len": 684,
+        "label": 3,
+        "class": "Sci/Tech",
+        "url_count": 3
+      }
+    ]
+  },
+  "duplicates": {
+    "unique_duplicate_texts": 0,
+    "total_duplicate_instances": 0,
+    "top_examples": []
+  },
+  "high_digit_ratio": {
+    "count": 0,
+    "threshold": 0.3
+  },
+  "empty_texts": {
+    "count": 0
+  }
+}
