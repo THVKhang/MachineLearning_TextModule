@@ -29,13 +29,7 @@ class AgencyPlan:
 
 
 class AgencyPlanner:
-    """Planner v2: selects experiment strategy by objective.
-
-    Changes vs v1:
-    - balanced: benchmark_scales upgraded from 5k_2k → 20k_2k
-      (20k_2k embedding F1=0.8954 vs 5k_2k F1=0.8736, +2.2%).
-    - best notes: includes current benchmark results for reference.
-    """
+    """Planner v2: select experiment strategy by objective (fast / balanced / best)."""
 
     def plan(self, objective: Objective) -> AgencyPlan:
         if objective == "fast":
