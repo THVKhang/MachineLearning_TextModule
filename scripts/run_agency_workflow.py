@@ -16,6 +16,8 @@ from modules.agency_critic import run_critic
 from modules.agency_planner import AgencyPlanner
 from modules.agency_reporter import run_reporter
 from modules.agency_runners import run_embedding_from_plan, run_tfidf_from_plan
+from modules.eda_advanced import run_eda_advanced
+from scripts.build_comparison_figure import build_comparison_figure
 from scripts.build_feature_family_comparison import load_best_rows
 
 
@@ -109,6 +111,39 @@ def main() -> None:
     full_path = tables_dir / "feature_family_comparison_full.csv"
     full_out.to_csv(full_path, index=False)
 
+    # Comparison figure: TF-IDF vs Embedding bar chart
+    print("\n[Figure] Building TF-IDF vs Embedding comparison chart...")
+    try:
+        comparison_figure_path = build_comparison_figure()
+    except Exception as exc:
+        print(f"[Figure] Skipped (missing data): {exc}")
+        comparison_figure_path = None
+
+    # EDA advanced: noise detection on test split
+    print("\n[EDA Advanced] Running noise detection on test data...")
+    eda_report: dict | None = None
+    try:
+        from modules.data_loader import load_data
+        _, _, test_texts, test_labels, _ = load_data("ag_news")
+        # Collect error analysis JSON paths produced by TF-IDF runner
+        error_reports: list[dict] = []
+        if tfidf_run is not None:
+            import json as _json
+            for ep in tfidf_run.get("eda_error_paths", []):
+                try:
+                    error_reports.append(_json.loads(Path(ep).read_text(encoding="utf-8")))
+                except Exception:
+                    pass
+        eda_report = run_eda_advanced(
+            project_root=PROJECT_ROOT,
+            texts=list(test_texts[:7600]),
+            labels=list(test_labels[:7600]),
+            class_names=["World", "Sports", "Business", "Sci/Tech"],
+            error_reports=error_reports if error_reports else None,
+        )
+    except Exception as exc:
+        print(f"[EDA Advanced] Skipped: {exc}")
+
     critic = run_critic(
         project_root=PROJECT_ROOT,
         primary_metric=str(plan.primary_metric),
@@ -122,6 +157,7 @@ def main() -> None:
         tfidf_run=tfidf_run,
         embedding_run=embedding_run,
         critic_report=critic,
+        eda_report=eda_report,
     )
 
     workflow_log = {
@@ -131,6 +167,8 @@ def main() -> None:
         "embedding_run": embedding_run,
         "critic": critic,
         "reporter": reporter,
+        "eda_report": eda_report,
+        "comparison_figure": comparison_figure_path,
         "comparison_table": str(best_path),
         "comparison_table_full": str(full_path),
         "archived_legacy_paths": archived_paths,

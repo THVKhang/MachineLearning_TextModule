@@ -7,11 +7,11 @@
   "best_metric": 0.904417,
   "findings": [],
   "checked_files": [
-    "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\tfidf_model_comparison.csv",
-    "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\bert_benchmark_results.csv",
-    "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\feature_family_comparison.csv",
-    "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_logistic_regression.png",
-    "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_svm.png",
-    "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_naive_bayes.png"
+    "results\\tables\\tfidf_model_comparison.csv",
+    "results\\tables\\bert_benchmark_results.csv",
+    "results\\tables\\feature_family_comparison.csv",
+    "results\\figures\\cm_logistic_regression.png",
+    "results\\figures\\cm_svm.png",
+    "results\\figures\\cm_naive_bayes.png"
   ]
 }

@@ -1,3 +1,19 @@
+"""
+[DEPRECATED] runner_tfidf.py — Root-level standalone runner.
+
+This file is superseded by the agency workflow pipeline:
+  - Use `run_experiments.py::run_tfidf_benchmark()` for programmatic calls.
+  - Use `scripts/run_agency_workflow.py <objective>` for the full Planner→Runner→Critic→Reporter workflow.
+
+Kept for reference only. Do NOT add new features here.
+"""
+import warnings
+warnings.warn(
+    "runner_tfidf.py is deprecated. Use run_experiments.py or scripts/run_agency_workflow.py instead.",
+    DeprecationWarning,
+    stacklevel=2,
+)
+
 import json
 import time
 import numpy as np
@@ -100,6 +116,8 @@ def run_tfidf_pipeline(cfg: Config, run_name: str):
     return log_data
 
 if __name__ == "__main__":
+    # DEPRECATED: Use `python scripts/run_agency_workflow.py best` instead.
+    # Kept for reference. Configs below match historical runs.
     base_config = Config(mode="demo", model_type="logistic_regression")
 
     config_best = replace(base_config, max_features=10000, ngram_range=(1, 2))

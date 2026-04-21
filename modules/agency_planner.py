@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass, asdict
 from typing import Literal
 
+# Planner version
+PLANNER_VERSION = "v2"
 
 Objective = Literal["fast", "balanced", "best"]
 
@@ -18,6 +20,7 @@ class AgencyPlan:
     benchmark_scales: tuple[str, ...]
     primary_metric: str
     notes: str
+    planner_version: str = PLANNER_VERSION
 
     def to_dict(self) -> dict[str, str]:
         data = asdict(self)
@@ -26,10 +29,12 @@ class AgencyPlan:
 
 
 class AgencyPlanner:
-    """Simple planner that selects an experiment strategy by objective.
+    """Planner v2: selects experiment strategy by objective.
 
-    This is intentionally lightweight: it recommends what to run rather than
-    executing anything itself.
+    Changes vs v1:
+    - balanced: benchmark_scales upgraded from 5k_2k → 20k_2k
+      (20k_2k embedding F1=0.8954 vs 5k_2k F1=0.8736, +2.2%).
+    - best notes: includes current benchmark results for reference.
     """
 
     def plan(self, objective: Objective) -> AgencyPlan:
@@ -43,7 +48,10 @@ class AgencyPlanner:
                 recommended_model="naive_bayes",
                 benchmark_scales=("5k_2k",),
                 primary_metric="f1_weighted",
-                notes="Use the smallest working configuration to validate the pipeline quickly.",
+                notes=(
+                    "Smallest working configuration to validate the pipeline quickly. "
+                    "Expected F1 ~0.85+ on demo slice."
+                ),
             )
 
         if objective == "balanced":
@@ -54,9 +62,13 @@ class AgencyPlanner:
                 model_family="classical",
                 recommended_feature_config="tfidf_uni_bi_5k + sbert/all-MiniLM-L6-v2",
                 recommended_model="logistic_regression",
-                benchmark_scales=("5k_2k",),
+                benchmark_scales=("20k_2k",),   # v2: upgraded from 5k_2k
                 primary_metric="f1_weighted",
-                notes="Run the best TF-IDF config and one embedding benchmark to compare families.",
+                notes=(
+                    "[v2] Upgraded embedding scale to 20k_2k "
+                    "(F1=0.8954 vs 5k_2k F1=0.8736, +2.2%). "
+                    "Run best TF-IDF config and one embedding benchmark to compare families."
+                ),
             )
 
         if objective == "best":
@@ -66,10 +78,14 @@ class AgencyPlanner:
                 feature_family="tfidf+embedding",
                 model_family="classical",
                 recommended_feature_config="tfidf_uni_bi_5k + sbert/all-MiniLM-L6-v2",
-                recommended_model="logistic_regression",
+                recommended_model="svm",
                 benchmark_scales=("5k_2k", "20k_2k"),
                 primary_metric="f1_weighted",
-                notes="Run full benchmark coverage, compare both feature families, and finalize the report-ready recommendation.",
+                notes=(
+                    "Full benchmark coverage, compare both feature families. "
+                    "Current best: TF-IDF SVM F1=0.9044 (full, 120k train). "
+                    "Finalize report-ready recommendation."
+                ),
             )
 
         raise ValueError(f"Unsupported objective: {objective}")

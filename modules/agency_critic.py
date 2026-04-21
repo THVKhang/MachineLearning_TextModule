@@ -54,10 +54,11 @@ def run_critic(
     findings: list[CriticFinding] = []
     checked_files: list[str] = [str(tfidf_path), str(embedding_path), str(compare_path)]
 
+    # Canonical location: results/figures/ (results/cm_*.png are legacy copies).
     required_artifacts = [
-        results_dir / "cm_logistic_regression.png",
-        results_dir / "cm_svm.png",
-        results_dir / "cm_naive_bayes.png",
+        results_dir / "figures" / "cm_logistic_regression.png",
+        results_dir / "figures" / "cm_svm.png",
+        results_dir / "figures" / "cm_naive_bayes.png",
     ]
 
     for artifact in required_artifacts:

@@ -18,7 +18,19 @@ def run_reporter(
     tfidf_run: dict[str, Any] | None,
     embedding_run: dict[str, Any] | None,
     critic_report: dict[str, Any],
+    eda_report: dict[str, Any] | None = None,
 ) -> dict[str, str]:
+    """Generate agency summary markdown + JSON from workflow outputs.
+
+    Parameters
+    ----------
+    project_root : Path
+    plan : dict — output of AgencyPlanner.plan().to_dict()
+    tfidf_run : dict | None — output of run_tfidf_benchmark()
+    embedding_run : dict | None — output of run_embedding_benchmark()
+    critic_report : dict — output of run_critic()
+    eda_report : dict | None — output of run_eda_advanced() (optional)
+    """
     reports_dir = project_root / "results" / "reports"
     reports_dir.mkdir(parents=True, exist_ok=True)
 
@@ -47,7 +59,12 @@ def run_reporter(
         "",
         "## Runner Outputs",
         f"- TF-IDF log: {(tfidf_run or {}).get('log_path', 'not-run')}",
+        f"- TF-IDF best model: {(tfidf_run or {}).get('best_model', 'n/a')} "
+        f"(F1={_fmt_float((tfidf_run or {}).get('best_primary_metric'))})",
         f"- Embedding log: {(embedding_run or {}).get('log_path', 'not-run')}",
+        f"- Embedding best model: {(embedding_run or {}).get('best_model', 'n/a')} "
+        f"@ {(embedding_run or {}).get('best_scale', 'n/a')} "
+        f"(F1={_fmt_float((embedding_run or {}).get('best_primary_metric'))})",
         "",
         "## Critic Verdict",
         f"- Status: {verdict}",
@@ -60,11 +77,34 @@ def run_reporter(
         f"- {recommendation}",
     ]
 
+    # Findings section
     findings = critic_report.get("findings", [])
     if findings:
-        lines.extend(["", "## Findings"])
+        lines.extend(["", "## Critic Findings"])
         for finding in findings:
-            lines.append(f"- [{finding.get('severity', 'info')}] {finding.get('code', 'finding')}: {finding.get('message', '')}")
+            lines.append(
+                f"- [{finding.get('severity', 'info')}] "
+                f"{finding.get('code', 'finding')}: {finding.get('message', '')}"
+            )
+
+    # EDA highlights section
+    if eda_report:
+        noise_summary = eda_report.get("noise_summary", {})
+        lines.extend(
+            [
+                "",
+                "## EDA Highlights",
+                f"- Total texts analyzed: {noise_summary.get('total_texts', 'n/a')}",
+                f"- Short texts (< 20 chars): {noise_summary.get('short_texts', 'n/a')}",
+                f"- Long texts (> 1000 chars): {noise_summary.get('long_texts', 'n/a')}",
+                f"- Duplicate instances: {noise_summary.get('duplicates_total', 'n/a')}",
+                f"- URL-heavy texts: {noise_summary.get('url_heavy', 'n/a')}",
+                f"- Estimated noise %: {noise_summary.get('noise_pct', 'n/a')}%",
+            ]
+        )
+        error_paths = eda_report.get("error_report_paths", [])
+        if error_paths:
+            lines.append(f"- Error analysis report: {error_paths[0]}")
 
     md_path = reports_dir / "agency_summary.md"
     md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -74,6 +114,7 @@ def run_reporter(
         "tfidf_run": tfidf_run,
         "embedding_run": embedding_run,
         "critic": critic_report,
+        "eda_report": eda_report,
         "recommendation": recommendation,
         "summary_markdown": str(md_path),
     }

@@ -11,6 +11,7 @@ import pandas as pd
 
 from modules.config import Config
 from modules.data_loader import load_data
+from modules.eda_advanced import analyze_errors
 from modules.metrics import plot_confusion_matrix, print_result
 from modules.text_preprocess import TextCleaner
 from modules.tfidf_features import build_tfidf_features, save_features_npy
@@ -146,11 +147,42 @@ def run_tfidf_benchmark(
         min_df=int(best_cfg["min_df"]),
     )
 
+    # --- Scale-aware subfolder (avoids demo/full overwrite) ---
+    if mode == "demo":
+        scale_tag = f"{n_train // 1000}k_{n_test // 1000}k"
+    else:
+        scale_tag = "full"
+
     tfidf_dir = base_cfg.feature_dir / "tfidf"
+    scale_dir = tfidf_dir / scale_tag
+    scale_dir.mkdir(parents=True, exist_ok=True)
+    save_features_npy(
+        x_train, x_test,
+        feature_dir=str(scale_dir),
+        train_name="tfidf_train.npy",
+        test_name="tfidf_test.npy",
+    )
+    # Also write metadata so downstream tools know what was built
+    (scale_dir / "metadata.json").write_text(
+        json.dumps(
+            {
+                "scale_tag": scale_tag,
+                "mode": mode,
+                "n_train": n_train,
+                "n_test": n_test,
+                "tfidf_config": str(best_cfg["name"]),
+                "max_features": int(best_cfg["max_features"]),
+                "ngram_range": list(best_cfg["ngram_range"]),
+                "min_df": int(best_cfg["min_df"]),
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    # Keep flat files for backward compatibility (overwrite latest)
     tfidf_dir.mkdir(parents=True, exist_ok=True)
     save_features_npy(
-        x_train,
-        x_test,
+        x_train, x_test,
         feature_dir=str(tfidf_dir),
         train_name="tfidf_train.npy",
         test_name="tfidf_test.npy",
@@ -160,13 +192,23 @@ def run_tfidf_benchmark(
     models = model_list if model_list is not None else list(base_cfg.model_list)
     metrics_rows: list[dict[str, float | str]] = []
     artifact_paths: list[str] = []
+    eda_paths: list[str] = []  # error analysis JSON per model
 
     base_cfg.result_dir.mkdir(parents=True, exist_ok=True)
     base_cfg.table_dir.mkdir(parents=True, exist_ok=True)
     base_cfg.figure_dir.mkdir(parents=True, exist_ok=True)
     base_cfg.log_dir.mkdir(parents=True, exist_ok=True)
+    eda_dir = base_cfg.result_dir / "eda"
+    eda_dir.mkdir(parents=True, exist_ok=True)
 
+    # AG News class names (label 0-3)
     class_names = [str(x) for x in sorted(np.unique(y_train))]
+    ag_class_names = ["World", "Sports", "Business", "Sci/Tech"]
+    # Use AG News names if label set matches
+    if len(class_names) == 4:
+        class_names_display = ag_class_names
+    else:
+        class_names_display = class_names
 
     for model_type in models:
         train_start = time.time()
@@ -199,12 +241,11 @@ def run_tfidf_benchmark(
             }
         )
 
-        # Standardized figure location
         cm_figure_path = base_cfg.figure_dir / f"cm_{model_type}.png"
         plot_confusion_matrix(
             y_true=y_test,
             y_pred=y_pred,
-            class_names=class_names,
+            class_names=class_names_display,
             save_path=str(cm_figure_path),
             title=f"Confusion Matrix - {model_type}",
         )
@@ -215,6 +256,22 @@ def run_tfidf_benchmark(
         shutil.copyfile(cm_figure_path, cm_root_path)
         artifact_paths.append(str(cm_root_path))
         print(f"Saved confusion matrix: {cm_root_path}")
+
+        # Error analysis — save per-model JSON
+        error_report = analyze_errors(
+            texts=list(test_clean),
+            y_true=y_test,
+            y_pred=y_pred,
+            class_names=class_names_display,
+            model_name=model_type,
+            top_n=10,
+        )
+        error_path = eda_dir / f"error_analysis_{model_type}.json"
+        error_path.write_text(
+            json.dumps(error_report, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
+        eda_paths.append(str(error_path))
+        print(f"Saved error analysis: {error_path}")
 
     df = pd.DataFrame(metrics_rows).sort_values(by="f1_weighted", ascending=False)
     table_path = base_cfg.table_dir / "tfidf_model_comparison.csv"
@@ -228,6 +285,7 @@ def run_tfidf_benchmark(
     run_meta: dict[str, object] = {
         "runner": "tfidf",
         "mode": mode,
+        "scale_tag": scale_tag,
         "selected_config": str(best_cfg["name"]),
         "candidate_configs": [str(c["name"]) for c in tfidf_configs],
         "models": models,
@@ -236,6 +294,7 @@ def run_tfidf_benchmark(
         "best_primary_metric": float(best_row[primary_metric]),
         "table_path": str(table_path),
         "artifact_paths": artifact_paths,
+        "eda_error_paths": eda_paths,
     }
     log_path = base_cfg.log_dir / "tfidf_runner_last.json"
     log_path.write_text(json.dumps(run_meta, indent=2), encoding="utf-8")

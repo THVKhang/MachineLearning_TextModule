@@ -324,8 +324,8 @@ def run_embedding_benchmark(
     }
     cfg.log_dir.mkdir(parents=True, exist_ok=True)
     log_path = cfg.log_dir / "embedding_runner_last.json"
+    run_meta["log_path"] = str(log_path)  # set before writing so file includes this field
     log_path.write_text(json.dumps(run_meta, indent=2), encoding="utf-8")
-    run_meta["log_path"] = str(log_path)
 
     print("\n" + "=" * 80)
     print("BENCHMARK COMPLETE")
