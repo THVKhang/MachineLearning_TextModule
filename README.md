@@ -77,9 +77,7 @@ MachineLearning_TextModule/
 |   |-- metrics.py
 |   |-- pipeline.py
 |-- notebooks/
-|   |-- 01_eda.ipynb
-|   |-- 02_bert_benchmark.ipynb
-|   |-- final.ipynb
+|   |-- colab_submission.ipynb
 |-- features/
 |   |-- tfidf_train.npy
 |   |-- tfidf_test.npy
@@ -88,8 +86,9 @@ MachineLearning_TextModule/
 |   |-- (figures/tables/logs are generated during execution)
 |-- tests/
 |   |-- test_modules.py
-|-- report/
+|-- reports/
 |   |-- report.tex
+|   |-- report.pdf
 ```
 
 ## 6. Environment Setup
@@ -206,7 +205,7 @@ Bonus opportunities:
 
 - GitHub repository: https://github.com/THVKhang/MachineLearning_TextModule
 - Colab notebook (submission): https://colab.research.google.com/github/THVKhang/MachineLearning_TextModule/blob/main/notebooks/colab_submission.ipynb
-- PDF report: report/report.pdf
+- PDF report: reports/report.pdf
 - Feature files (.npy/.h5) if hosted separately: generated locally via workflow and stored under features/ and results/.
 
 ## 12. Pre-Submission Checklist
