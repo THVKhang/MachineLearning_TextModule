@@ -52,6 +52,24 @@ The project aims to build a complete text classification pipeline from explorato
     \item Split used in full mode: 120,000 training samples and 7,600 test samples.
 \end{itemize}
 
+\section{Source Code and Reproducibility}
+The complete source code, artifacts, and instructions to run this project are available on our public GitHub repository:
+\begin{center}
+    \url{https://github.com/THVKhang/MachineLearning_TextModule}
+\end{center}
+All executions are designed to be reproducible via a single Colab Notebook entry point, without requiring personal cloud storage mounting.
+
+\section{Exploratory Data Analysis (EDA)}
+Extensive Exploratory Data Analysis was performed to understand the characteristics of the AG News dataset. Key findings include:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Balanced dataset:} The 120,000 training samples are perfectly balanced across the 4 classes (~30,000 each). This eliminates the need for class weighting or resampling techniques.
+    \item \textbf{Short texts:} The average text length is approximately 35 words. Most semantic content can be captured effectively using TF-IDF with bigrams.
+    \item \textbf{Domain-specific vocabulary:} Each class has distinct top keywords (e.g., ``game'' for Sports, ``stock'' for Business).
+    \item \textbf{Low noise:} The dataset is very clean, with near-zero empty or duplicate texts.
+    \item \textbf{Minimal URLs:} Only about 32 URL-heavy texts were found in the training set, having negligible impact on overall quality.
+\end{itemize}
+These findings motivated our use of standard TF-IDF and SBERT models without the need for complex outlier handling.
+
 \section{Implemented Methodology}
 \subsection{Traditional Pipeline}
 \begin{itemize}[leftmargin=*]
