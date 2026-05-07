@@ -278,6 +278,14 @@ Naive Bayes & 0.8871 & 0.8866 & 0.8871 & 0.8867 \\
     \caption{Confusion Matrices for Traditional Models}
 \end{figure}
 
+\textbf{Analysis of the Confusion Matrices:} 
+The confusion matrices in Figure 3 visually confirm the robustness of the traditional models, particularly SVM and Logistic Regression. The heavy concentration of values along the main diagonal indicates high classification accuracy across all four classes. 
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Support Vector Machine (SVM):} SVM exhibits the sharpest diagonal, meaning it made the fewest misclassifications. Its strong margin-maximization approach effectively separates the high-dimensional sparse TF-IDF vectors.
+    \item \textbf{Logistic Regression:} It performs nearly identically to SVM but shows slightly more `bleed'' in off-diagonal cells, particularly confusing Business and Sci/Tech.
+    \item \textbf{Naive Bayes:} While computationally the fastest, it struggles visibly compared to the other two. The independence assumption of Naive Bayes causes it to heavily misclassify semantically overlapping categories, resulting in noticeably lighter diagonal cells and denser off-diagonal errors.
+\end{itemize}
+
 \subsection{SBERT Benchmark Results}
 \begin{table}[H]
 \centering
@@ -302,15 +310,17 @@ Scale & Best Model & Accuracy & Precision (w) & Recall (w) & F1 (w) \\
 The final Comparative Analysis shows that the best TF-IDF model (SVM with F1 = 0.9044) marginally outperformed the best Transformer-based contextual embedding model (SVM at 20k scale with F1 = 0.8954). The Transformer-based model underperformed the traditional SVM baseline in this specific context because the AG News dataset consists of very short texts (average 35 words) with highly distinct, domain-specific vocabularies (e.g., "stock", "baseball"). Traditional TF-IDF excels at capturing these explicit keyword signals without requiring complex semantic relationships. Furthermore, TF-IDF is significantly faster to train and extract, while maintaining highly interpretable sparse features. Therefore, TF-IDF + SVM is the primary recommendation.
 
 \section{Error Analysis}
-An error analysis was performed on the best TF-IDF model (SVM) to understand the distribution of misclassifications. Out of 7,600 test samples, the SVM model made 381 errors.
+An error analysis was performed on the best TF-IDF model (SVM) to deeply understand the root causes of misclassifications and the limitations of the traditional pipeline. Out of the 7,600 unseen test samples, the SVM model made exactly 381 errors (an error rate of roughly 5\%).
 
-The top 3 most common confusion pairs are:
+The top 3 most common confusion pairs extracted from the prediction logs are:
 \begin{enumerate}
-    \item \textbf{True: Business $\rightarrow$ Predicted: Sci/Tech} (73 occurrences)
-    \item \textbf{True: Business $\rightarrow$ Predicted: World} (49 occurrences)
-    \item \textbf{True: World $\rightarrow$ Predicted: Sci/Tech} (44 occurrences)
+    \item \textbf{True: Business $\rightarrow$ Predicted: Sci/Tech} (73 occurrences): This is the most frequent error. It occurs because modern business news heavily revolves around technology companies (e.g., Apple, Microsoft, Intel releasing earnings reports). The vocabulary naturally overlaps.
+    \item \textbf{True: Business $\rightarrow$ Predicted: World} (49 occurrences): Articles discussing international trade, global markets, or macroeconomic policies often contain geographic and political terms that the model associates with World news.
+    \item \textbf{True: World $\rightarrow$ Predicted: Sci/Tech} (44 occurrences): Global news covering space exploration, international cyber-security, or global scientific summits often triggers the Sci/Tech classification logic due to overlapping terminology.
 \end{enumerate}
-This indicates a semantic overlap between Business/Technology news and Business/World news, which is common in articles discussing international tech corporations or global markets.
+
+\textbf{Conclusion on Errors:} The vast majority of the errors are not random but stem from inherently ambiguous texts that even human annotators might debate. The boundary between `Business'' and `Technology'' in the 21st century is extremely blurred, making this a challenging boundary for any lexical-based model to resolve perfectly without deeper contextual reasoning.
+
 
 \section{Team Contributions}
 \begin{table}[H]
@@ -319,11 +329,11 @@ This indicates a semantic overlap between Business/Technology news and Business/
 \toprule
 Member & ID & Email & Main Contribution & \% \\
 \midrule
-Tran Hoang Vy Khang & 2352502 & 2352502@hcmut.edu.vn & Embeddings, workflow, integration & 30 \\
-Le Tan Minh Khoa & 2352563 & 2352563@hcmut.edu.vn & Text cleaning and TF-IDF & 20 \\
-Tao Nguyen Quang Khang & 2352499 & 2352499@hcmut.edu.vn & ML training and evaluation & 20 \\
-Tran Gia Huy & 2252264 & 2252264@hcmut.edu.vn & Pipeline and config architecture & 15 \\
-Vo Le Hai Dang & 2352257 & 2352257@hcmut.edu.vn & Data loading and EDA analysis & 15 \\
+Tran Hoang Vy Khang & 2352502 & khang.tran2106@hcmut.edu.vn & Embeddings, workflow, integration & 30 \\
+Le Tan Minh Khoa & 2352563 & - & Text cleaning and TF-IDF & 20 \\
+Tao Nguyen Quang Khang & 2352499 & - & ML training and evaluation & 20 \\
+Tran Gia Huy & 2252264 & - & Pipeline and config architecture & 15 \\
+Vo Le Hai Dang & 2352257 & - & Data loading and EDA analysis & 15 \\
 \bottomrule
 \end{tabularx}
 \caption{Detailed contribution table with student emails.}
