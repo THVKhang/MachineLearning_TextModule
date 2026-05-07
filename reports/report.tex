@@ -1,34 +1,164 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                               PREAMBLE                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[a4paper,12pt]{article}
 
+%---------- LANGUAGE & FONT SUPPORT ----------%
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
-\usepackage{amsmath,amssymb}
-\usepackage{booktabs,tabularx}
-\usepackage{graphicx}
+\usepackage{mathptmx}
+\usepackage{inconsolata}
+
+%---------- COMMON PACKAGES ----------%
 \usepackage{float}
-\usepackage{hyperref}
-\usepackage{enumitem}
-\usepackage{longtable}
-\usepackage{subcaption}
-
-\title{Machine Learning Course Project Report\\Text Classification on AG News}
-\author{
-Tran Hoang Vy Khang (2352502)\\
-Le Tan Minh Khoa (2352563)\\
-Tao Nguyen Quang Khang (2352499)\\
-Tran Gia Huy (2252264)\\
-Vo Le Hai Dang (2352257)
+\usepackage{textcomp}
+\usepackage{geometry}
+\geometry{
+  a4paper,
+  total={170mm,257mm},
+  left=20mm,
+  top=20mm,
+  includefoot,
 }
-\date{Semester I, 2025--2026}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xurl}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  filecolor=magenta,
+  urlcolor=blue,
+  citecolor=black,
+}
+\usepackage{booktabs,makecell,tabularx}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{picture}
+\usepackage{enumitem}
+\usepackage{ragged2e}
+\usepackage[protrusion=false, expansion=false]{microtype}
 
+%---------- LIST CONFIGURATION ----------%
+\setlist[itemize,1]{label=--, labelsep=0.6em}
+\setlist[itemize,2]{label=\textbullet}
+\setlist[enumerate,1]{leftmargin=*,nosep}
+\newcolumntype{L}{>{\bfseries}p{28mm}}
+\newcolumntype{P}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+
+\emergencystretch=2em
+
+%---------- CODE DISPLAY CONFIGURATION ----------%
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codeblue}{rgb}{0.0, 0.0, 1.0}
+\definecolor{codered}{rgb}{1.0, 0.0, 0.0}
+\definecolor{backcolour}{rgb}{1.0, 1.0, 1.0}
+
+\lstdefinestyle{PythonStyle}{
+  backgroundcolor=\color{backcolour},
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{codeblue},
+  stringstyle=\color{codered},
+  basicstyle=\ttfamily\small,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  keepspaces=true,
+  numbers=none,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=4,
+  frame=single,
+  rulecolor=\color{black},
+}
+\lstset{style=PythonStyle}
+
+%---------- HEADER & FOOTER CONFIGURATION ----------%
+\setlength{\headheight}{52pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{%
+  \begin{tabular}{rl}
+    \begin{picture}(25,15)(0,0)
+      \put(0,-8){\includegraphics[width=8mm,height=8mm]{Image/hcmut.jpg}}
+    \end{picture} &
+    \begin{tabular}{l}
+      \textbf{\ttfamily Ho Chi Minh City University of Technology}\\
+      \textbf{\ttfamily Faculty of Computer Science and Engineering}
+    \end{tabular}
+  \end{tabular}
+}
+\fancyfoot[L]{\scriptsize \ttfamily Machine Learning Project - Text Classification}
+\fancyfoot[R]{\scriptsize \ttfamily Page \thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0.3pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                            DOCUMENT BODY                           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-\maketitle
+%---------- TITLE PAGE ----------%
+\begin{titlepage}
+  \thispagestyle{empty}
+  \newcommand{\HRule}{\rule{\linewidth}{0.6pt}}
+  \begin{center}
+    \vspace*{6mm}
+    \textbf{VIETNAM NATIONAL UNIVERSITY - HO CHI MINH CITY}\\
+    \textbf{HO CHI MINH CITY UNIVERSITY OF TECHNOLOGY}\\
+    \textbf{FACULTY OF COMPUTER SCIENCE AND ENGINEERING}
+    \vspace{12mm}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=50mm]{Image/hcmut.jpg}
+    \end{figure}
+    \vspace{14mm}
+
+    \begin{center}
+        {\Large \bfseries MACHINE LEARNING (CO3117)}
+        \vspace{1.5cm}
+
+        \HRule \\[0.5cm]
+        {\Large \textbf{Assignment Report}} \\[0.5cm]
+        {\huge \bfseries Text Classification on AG News} \\[0.5cm]
+    \end{center}
+
+    \vspace{6mm}
+    \HRule
+    \vspace{20mm}
+
+    \begin{tabular}{@{}l l@{}}
+    \textbf{Instructor:} & Dr. Le Thanh Sach \\
+    \addlinespace[6pt]
+    \multicolumn{2}{@{}l}{\textbf{Members:}} \\
+    & Tran Hoang Vy Khang -- [2352502] \\
+    & Le Tan Minh Khoa -- [2352563] \\
+    & Tao Nguyen Quang Khang -- [2352499] \\
+    & Tran Gia Huy -- [2252264] \\
+    & Vo Le Hai Dang -- [2352257] \\
+    \end{tabular}
+
+    \vfill
+    {\large Ho Chi Minh City, Semester I, 2025-2026}
+  \end{center}
+\end{titlepage}
+
+\newpage
+\tableofcontents
+\newpage
 
 \section{Course Context}
+
 \begin{itemize}[leftmargin=*]
     \item Course: Machine Learning (CO3117)
     \item Department: Computer Science and Engineering, HCMUT -- VNU-HCM
