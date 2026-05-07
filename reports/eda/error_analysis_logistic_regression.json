@@ -1,0 +1,172 @@
+{
+  "model": "logistic_regression",
+  "total_test": 2000,
+  "total_errors": 361,
+  "error_rate": 0.1805,
+  "top_confusion_pairs": [
+    {
+      "true": "Business",
+      "pred": "Sci/Tech",
+      "count": 82
+    },
+    {
+      "true": "Sci/Tech",
+      "pred": "Business",
+      "count": 41
+    },
+    {
+      "true": "Business",
+      "pred": "World",
+      "count": 39
+    },
+    {
+      "true": "World",
+      "pred": "Sci/Tech",
+      "count": 38
+    },
+    {
+      "true": "Sports",
+      "pred": "World",
+      "count": 31
+    },
+    {
+      "true": "Sports",
+      "pred": "Sci/Tech",
+      "count": 30
+    },
+    {
+      "true": "Sci/Tech",
+      "pred": "World",
+      "count": 26
+    },
+    {
+      "true": "World",
+      "pred": "Business",
+      "count": 24
+    },
+    {
+      "true": "World",
+      "pred": "Sports",
+      "count": 23
+    },
+    {
+      "true": "Sports",
+      "pred": "Business",
+      "count": 12
+    }
+  ],
+  "per_class_errors": {
+    "World": {
+      "total": 511,
+      "errors": 85,
+      "error_rate": 0.1663
+    },
+    "Sports": {
+      "total": 526,
+      "errors": 73,
+      "error_rate": 0.1388
+    },
+    "Business": {
+      "total": 449,
+      "errors": 128,
+      "error_rate": 0.2851
+    },
+    "Sci/Tech": {
+      "total": 514,
+      "errors": 75,
+      "error_rate": 0.1459
+    }
+  },
+  "sample_errors": [
+    {
+      "idx": 4,
+      "true_label": 3,
+      "pred_label": 0,
+      "true_class": "Sci/Tech",
+      "pred_class": "World",
+      "text_preview": "calif aims limit farmrelated smog ap ap southern californias smogfighting agency went emissions bovine variety friday adopting nations first rules reduce air pollution dairy cow manure",
+      "text_len": 184
+    },
+    {
+      "idx": 18,
+      "true_label": 3,
+      "pred_label": 0,
+      "true_class": "Sci/Tech",
+      "pred_class": "World",
+      "text_preview": "rocking cradle life life begin one evidential clue stems fossil records western australia although whether layered sediments biological chemical spawned spirited debate oxford researcher nicola mcloughlin describes issues contention",
+      "text_len": 232
+    },
+    {
+      "idx": 23,
+      "true_label": 3,
+      "pred_label": 2,
+      "true_class": "Sci/Tech",
+      "pred_class": "Business",
+      "text_preview": "people eligible get google ipo google billed ipo way everyday people get process denying wall street usual stranglehold ipos public bidding minimum five shares open process underwriters pointed new level public participation isnt case",
+      "text_len": 234
+    },
+    {
+      "idx": 27,
+      "true_label": 1,
+      "pred_label": 3,
+      "true_class": "Sports",
+      "pred_class": "Sci/Tech",
+      "text_preview": "tougher rules wont soften laws game foxborough looking ridiculously developed upper body huge biceps hardly ounce fat easy see ty law arguably best cornerback football chooses physical play finesse thats imply hes lacking finesse component shut side ",
+      "text_len": 274
+    },
+    {
+      "idx": 36,
+      "true_label": 0,
+      "pred_label": 2,
+      "true_class": "World",
+      "pred_class": "Business",
+      "text_preview": "venezuela prepares chavez recall vote supporters rivals warn possible fraud government says chavezs defeat could produce turmoil world oil market",
+      "text_len": 145
+    },
+    {
+      "idx": 37,
+      "true_label": 0,
+      "pred_label": 3,
+      "true_class": "World",
+      "pred_class": "Sci/Tech",
+      "text_preview": "law designed preserve guard jobs ap ap law strengthened job protections national guard reserve troops called active duty major provisions uniformed services employment reemployment rights act userra",
+      "text_len": 198
+    },
+    {
+      "idx": 43,
+      "true_label": 3,
+      "pred_label": 2,
+      "true_class": "Sci/Tech",
+      "pred_class": "Business",
+      "text_preview": "spam suspension hits sohucom shares ftcom ftcom shares sohucom leading uslisted chinese internet portal fell per cent friday chinas biggest mobile phone network operator imposed oneyear suspension multimedia messaging services customers sent spam",
+      "text_len": 246
+    },
+    {
+      "idx": 77,
+      "true_label": 1,
+      "pred_label": 3,
+      "true_class": "Sports",
+      "pred_class": "Sci/Tech",
+      "text_preview": "griffin anchor dline redskins expect huge things pound cornelius griffin signed aid teams weakest unit defensive line",
+      "text_len": 117
+    },
+    {
+      "idx": 79,
+      "true_label": 0,
+      "pred_label": 1,
+      "true_class": "World",
+      "pred_class": "Sports",
+      "text_preview": "live olympics day four richard faulds stephen parry going gold great britain day four athens",
+      "text_len": 92
+    },
+    {
+      "idx": 83,
+      "true_label": 2,
+      "pred_label": 3,
+      "true_class": "Business",
+      "pred_class": "Sci/Tech",
+      "text_preview": "intel delay product aimed highdefinition tvs san francisco latest series product delays intel corp postponed launch video display chip previously planned introduce year end putting showdown texas instruments inc fastgrowing market highdefinition tele",
+      "text_len": 265
+    }
+  ]
+}

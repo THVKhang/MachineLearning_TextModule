@@ -82,7 +82,7 @@ MachineLearning_TextModule/
 |   |-- tfidf_train.npy
 |   |-- tfidf_test.npy
 |   |-- bert/
-|-- results/
+|-- reports/
 |   |-- (figures/tables/logs are generated during execution)
 |-- tests/
 |   |-- test_modules.py
@@ -135,7 +135,7 @@ This benchmark will:
 - Extract SBERT embeddings for benchmark scales.
 - Save embeddings and labels in features/bert/<scale>/.
 - Train and evaluate 3 models: logistic_regression, svm, naive_bayes.
-- Save the summary table to results/tables/bert_benchmark_results.csv.
+- Save the summary table to reports/tables/bert_benchmark_results.csv.
 
 ### 7.3 Run the End-to-End Notebook UI
 
@@ -194,7 +194,7 @@ Current test coverage includes:
 - Experiment quality (25%): multiple models/configurations and benchmark scales compared.
 - Report quality (20%): documented in report materials.
 - Submission completeness (10%): clear notebook/modules/features/results organization.
-- Teamwork evidence (5%): module ownership by member, commit history by feature scope, and integrated workflow logs in results/logs.
+- Teamwork evidence (5%): module ownership by member, commit history by feature scope, and integrated workflow logs in reports/logs.
 
 Bonus opportunities:
 
@@ -206,7 +206,7 @@ Bonus opportunities:
 - GitHub repository: https://github.com/THVKhang/MachineLearning_TextModule
 - Colab notebook (submission): https://colab.research.google.com/github/THVKhang/MachineLearning_TextModule/blob/main/notebooks/colab_submission.ipynb
 - PDF report: reports/report.pdf
-- Feature files (.npy/.h5) if hosted separately: generated locally via workflow and stored under features/ and results/.
+- Feature files (.npy/.h5) if hosted separately: generated locally via workflow and stored under features/ and reports/.
 
 ## 12. Pre-Submission Checklist
 

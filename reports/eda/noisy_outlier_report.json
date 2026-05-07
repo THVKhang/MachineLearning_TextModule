@@ -1,0 +1,47 @@
+{
+  "summary": {
+    "total_texts": 7600,
+    "short_texts": 0,
+    "long_texts": 0,
+    "duplicates_total": 0,
+    "url_heavy": 1,
+    "high_digit_ratio": 0,
+    "empty": 0,
+    "noise_pct": 0.0
+  },
+  "short_texts": {
+    "count": 0,
+    "threshold_chars": 20,
+    "examples": []
+  },
+  "long_texts": {
+    "count": 0,
+    "threshold_chars": 1000,
+    "examples": []
+  },
+  "url_heavy_texts": {
+    "count": 1,
+    "examples": [
+      {
+        "idx": 6986,
+        "text_preview": "Alamosa to Buy AirGate for \\$392 Million  NEW YORK (Reuters) - Alamosa Holdings Inc. &lt;A HREF=\"http://www.investor.reuters.com/FullQuote.aspx?ticker=APCS.O target=/stocks/quickinfo/fullquote\"&gt;APC",
+        "char_len": 616,
+        "label": 2,
+        "class": "Business",
+        "url_count": 3
+      }
+    ]
+  },
+  "duplicates": {
+    "unique_duplicate_texts": 0,
+    "total_duplicate_instances": 0,
+    "top_examples": []
+  },
+  "high_digit_ratio": {
+    "count": 0,
+    "threshold": 0.3
+  },
+  "empty_texts": {
+    "count": 0
+  }
+}

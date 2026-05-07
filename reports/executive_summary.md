@@ -32,8 +32,8 @@
 
 ## Artifact Locations
 
-- TF-IDF model comparison: `results/tables/tfidf_model_comparison.csv`
-- Embedding benchmark: `results/tables/bert_benchmark_results.csv`
-- Feature family comparison: `results/tables/feature_family_comparison.csv`
-- Confusion matrices: `results/figures/cm_{svm,logistic_regression,naive_bayes}.png`
-- Agency workflow summary: `results/reports/agency_summary.md`
+- TF-IDF model comparison: `reports/tables/tfidf_model_comparison.csv`
+- Embedding benchmark: `reports/tables/bert_benchmark_results.csv`
+- Feature family comparison: `reports/tables/feature_family_comparison.csv`
+- Confusion matrices: `reports/figures/cm_{svm,logistic_regression,naive_bayes}.png`
+- Agency workflow summary: `reports/reports/agency_summary.md`

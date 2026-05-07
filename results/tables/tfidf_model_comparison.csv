@@ -1,4 +1,0 @@
-feature_method,tfidf_config,model,train_size,test_size,train_time_sec,accuracy,precision_weighted,recall_weighted,f1_weighted,primary_metric
-tfidf,tfidf_uni_bi_5k,svm,120000,7600,16.8284,0.904605,0.904444,0.904605,0.904417,f1_weighted
-tfidf,tfidf_uni_bi_5k,logistic_regression,120000,7600,177.6766,0.903816,0.903569,0.903816,0.903599,f1_weighted
-tfidf,tfidf_uni_bi_5k,naive_bayes,120000,7600,9.7281,0.887105,0.886555,0.887105,0.886714,f1_weighted

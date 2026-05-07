@@ -100,7 +100,7 @@ class Config:
         return self.project_root / "models"
     @property
     def result_dir(self) -> Path:
-        return self.project_root / "results"
+        return self.project_root / "reports"
     @property
     def figure_dir(self) -> Path:
         return self.result_dir / "figures"

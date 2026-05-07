@@ -113,7 +113,7 @@ Logistic Regression & 0.9038 & 0.9036 & 0.9038 & 0.9036 \\
 Naive Bayes & 0.8871 & 0.8866 & 0.8871 & 0.8867 \\
 \bottomrule
 \end{tabular}
-\caption{TF-IDF model comparison from \texttt{results/tables/tfidf\_model\_comparison.csv}.}
+\caption{TF-IDF model comparison from \texttt{reports/tables/tfidf\_model\_comparison.csv}.}
 \end{table}
 
 \subsection{SBERT Benchmark Results}
@@ -127,7 +127,7 @@ Scale & Best Model & Accuracy & Precision (w) & Recall (w) & F1 (w) \\
 20k\_2k & SVM & 0.8955 & 0.8958 & 0.8955 & 0.8954 \\
 \bottomrule
 \end{tabular}
-\caption{Best embedding model per scale from \texttt{results/tables/bert\_benchmark\_summary.csv}.}
+\caption{Best embedding model per scale from \texttt{reports/tables/bert\_benchmark\_summary.csv}.}
 \end{table}
 
 \subsection{Feature-Family Comparison}
@@ -139,7 +139,7 @@ The final comparison between best TF-IDF and best embedding model shows:
 Therefore, TF-IDF + SVM is selected as the final recommendation for this dataset and setup.
 
 \section{Artifact Outputs}
-The project exports reproducible artifacts under \texttt{features/} and \texttt{results/}, including:
+The project exports reproducible artifacts under \texttt{features/} and \texttt{reports/}, including:
 \begin{itemize}[leftmargin=*]
     \item Feature arrays (TF-IDF and SBERT) in \texttt{.npy} format.
     \item Confusion matrices for all TF-IDF models.
@@ -149,7 +149,7 @@ The project exports reproducible artifacts under \texttt{features/} and \texttt{
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.65\linewidth]{../results/figures/cm_svm.png}
+    \includegraphics[width=0.65\linewidth]{figures/cm_svm.png}
     \caption{Confusion matrix of best TF-IDF model (SVM).}
 \end{figure}
 

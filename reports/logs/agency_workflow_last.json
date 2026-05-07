@@ -1,22 +1,24 @@
 {
-  "objective": "best",
+  "objective": "fast",
   "plan": {
-    "objective": "best",
-    "mode": "full",
-    "feature_family": "tfidf+embedding",
+    "objective": "fast",
+    "mode": "demo",
+    "feature_family": "tfidf",
     "model_family": "classical",
-    "recommended_feature_config": "tfidf_uni_bi_5k + sbert/all-MiniLM-L6-v2",
-    "recommended_model": "logistic_regression",
-    "benchmark_scales": "5k_2k, 20k_2k",
+    "recommended_feature_config": "tfidf_uni_1k",
+    "recommended_model": "naive_bayes",
+    "benchmark_scales": "5k_2k",
     "primary_metric": "f1_weighted",
-    "notes": "Run full benchmark coverage, compare both feature families, and finalize the report-ready recommendation."
+    "notes": "Smallest working configuration to validate the pipeline quickly. Expected F1 ~0.85+ on demo slice.",
+    "planner_version": "v2"
   },
   "tfidf_run": {
     "runner": "tfidf",
-    "mode": "full",
-    "selected_config": "tfidf_uni_bi_5k",
+    "mode": "demo",
+    "scale_tag": "5k_2k",
+    "selected_config": "tfidf_uni_1k",
     "candidate_configs": [
-      "tfidf_uni_bi_5k"
+      "tfidf_uni_1k"
     ],
     "models": [
       "logistic_regression",
@@ -24,8 +26,8 @@
       "naive_bayes"
     ],
     "primary_metric": "f1_weighted",
-    "best_model": "svm",
-    "best_primary_metric": 0.904417,
+    "best_model": "naive_bayes",
+    "best_primary_metric": 0.832099,
     "table_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\tfidf_model_comparison.csv",
     "artifact_paths": [
       "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\figures\\cm_logistic_regression.png",
@@ -35,41 +37,29 @@
       "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\figures\\cm_naive_bayes.png",
       "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_naive_bayes.png"
     ],
+    "eda_error_paths": [
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\eda\\error_analysis_logistic_regression.json",
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\eda\\error_analysis_svm.json",
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\eda\\error_analysis_naive_bayes.json"
+    ],
     "log_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\logs\\tfidf_runner_last.json"
   },
-  "embedding_run": {
-    "runner": "embedding",
-    "scales": [
-      "5k_2k",
-      "20k_2k"
-    ],
-    "models": [
-      "logistic_regression",
-      "svm",
-      "naive_bayes"
-    ],
-    "best_model": "svm",
-    "best_scale": "20k_2k",
-    "best_primary_metric": 0.8954,
-    "table_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\bert_benchmark_results.csv",
-    "summary_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\bert_benchmark_summary.csv",
-    "log_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\logs\\embedding_runner_last.json"
-  },
+  "embedding_run": null,
   "critic": {
     "status": "pass",
     "primary_metric": "f1_weighted",
-    "threshold": 0.87,
-    "best_family": "tfidf",
+    "threshold": 0.8,
+    "best_family": "embedding",
     "best_model": "svm",
-    "best_metric": 0.904417,
+    "best_metric": 0.8954,
     "findings": [],
     "checked_files": [
       "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\tfidf_model_comparison.csv",
       "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\bert_benchmark_results.csv",
       "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\feature_family_comparison.csv",
-      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_logistic_regression.png",
-      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_svm.png",
-      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\cm_naive_bayes.png"
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\figures\\cm_logistic_regression.png",
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\figures\\cm_svm.png",
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\figures\\cm_naive_bayes.png"
     ],
     "report_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\logs\\critic_report.json"
   },
@@ -78,6 +68,24 @@
     "summary_json": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\reports\\agency_summary.json",
     "recommendation": "Use current best model for final report."
   },
+  "eda_report": {
+    "noise_report_path": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\eda\\noisy_outlier_report.json",
+    "noise_summary_csv": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\eda\\noise_summary.csv",
+    "noise_summary": {
+      "total_texts": 7600,
+      "short_texts": 0,
+      "long_texts": 0,
+      "duplicates_total": 0,
+      "url_heavy": 1,
+      "high_digit_ratio": 0,
+      "empty": 0,
+      "noise_pct": 0.0
+    },
+    "error_report_paths": [
+      "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\eda\\error_analysis_report.json"
+    ]
+  },
+  "comparison_figure": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\figures\\comparison_tfidf_vs_embedding.png",
   "comparison_table": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\feature_family_comparison.csv",
   "comparison_table_full": "C:\\Users\\Admin\\Documents\\GitHub\\MachineLearning_TextModule\\results\\tables\\feature_family_comparison_full.csv",
   "archived_legacy_paths": []
