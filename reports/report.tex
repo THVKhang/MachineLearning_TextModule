@@ -12,6 +12,7 @@
 \usepackage{hyperref}
 \usepackage{enumitem}
 \usepackage{longtable}
+\usepackage{subcaption}
 
 \title{Machine Learning Course Project Report\\Text Classification on AG News}
 \author{
@@ -60,26 +61,44 @@ The complete source code, artifacts, and instructions to run this project are av
 All executions are designed to be reproducible via a single Colab Notebook entry point, without requiring personal cloud storage mounting.
 
 \section{Exploratory Data Analysis (EDA)}
-Extensive Exploratory Data Analysis was performed to understand the characteristics of the AG News dataset. Key findings include:
+Extensive Exploratory Data Analysis was performed to understand the characteristics of the AG News dataset. 
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{eda/class_distribution.png}
+        \caption{Class Distribution}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{eda/text_length_distribution.png}
+        \caption{Text Length Distribution}
+    \end{subfigure}
+    \caption{Overview of Dataset Distributions}
+\end{figure}
+
+Key findings include:
 \begin{itemize}[leftmargin=*]
     \item \textbf{Balanced dataset:} The 120,000 training samples are perfectly balanced across the 4 classes (~30,000 each). This eliminates the need for class weighting or resampling techniques.
     \item \textbf{Short texts:} The average text length is approximately 35 words. Most semantic content can be captured effectively using TF-IDF with bigrams.
-    \item \textbf{Domain-specific vocabulary:} Each class has distinct top keywords (e.g., ``game'' for Sports, ``stock'' for Business).
+    \item \textbf{Domain-specific vocabulary:} Each class has distinct top keywords (e.g., `game'' for Sports, `stock'' for Business).
     \item \textbf{Low noise:} The dataset is very clean, with near-zero empty or duplicate texts.
     \item \textbf{Minimal URLs:} Only about 32 URL-heavy texts were found in the training set, having negligible impact on overall quality.
 \end{itemize}
-These findings motivated our use of standard TF-IDF and SBERT models without the need for complex outlier handling.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{eda/word_frequency.png}
+    \caption{Word Frequency Analysis across AG News}
+\end{figure}
 
 \section{Implemented Methodology}
 \subsection{Traditional Pipeline}
 \begin{itemize}[leftmargin=*]
     \item Preprocessing options: lowercasing, stopword removal, punctuation removal, number removal.
-    \item TF-IDF configuration search over three candidates:
-    \begin{itemize}
-        \item \texttt{tfidf\_uni\_1k}
-        \item \texttt{tfidf\_uni\_bi\_3k}
-        \item \texttt{tfidf\_uni\_bi\_5k}
-    \end{itemize}
+    \item TF-IDF configuration search over three candidates: \texttt{tfidf\_uni\_1k}, \texttt{tfidf\_uni\_bi\_3k}, and \texttt{tfidf\_uni\_bi\_5k}.
     \item Primary model-selection metric: F1-weighted.
     \item Trained models: Logistic Regression, SVM, Naive Bayes.
 \end{itemize}
@@ -89,15 +108,6 @@ These findings motivated our use of standard TF-IDF and SBERT models without the
     \item Embedding model: \texttt{sentence-transformers/all-MiniLM-L6-v2}.
     \item Benchmark scales: \texttt{5k\_2k} and \texttt{20k\_2k}.
     \item Embeddings and labels are exported to \texttt{.npy} artifacts.
-\end{itemize}
-
-\section{Engineering Workflow Integration}
-A one-entry workflow was implemented to improve reproducibility:
-\begin{itemize}[leftmargin=*]
-    \item Planner chooses objective-specific strategy (fast, balanced, best).
-    \item Runners execute TF-IDF and embedding branches.
-    \item Critic validates quality thresholds, required scales, and artifacts.
-    \item Reporter generates concise recommendation outputs.
 \end{itemize}
 
 \section{Results}
@@ -113,8 +123,30 @@ Logistic Regression & 0.9038 & 0.9036 & 0.9038 & 0.9036 \\
 Naive Bayes & 0.8871 & 0.8866 & 0.8871 & 0.8867 \\
 \bottomrule
 \end{tabular}
-\caption{TF-IDF model comparison from \texttt{reports/tables/tfidf\_model\_comparison.csv}.}
+\caption{TF-IDF model comparison.}
 \end{table}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/cm_svm.png}
+        \caption{SVM}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/cm_logistic_regression.png}
+        \caption{LogReg}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/cm_naive_bayes.png}
+        \caption{Naive Bayes}
+    \end{subfigure}
+    \caption{Confusion Matrices for Traditional Models}
+\end{figure}
 
 \subsection{SBERT Benchmark Results}
 \begin{table}[H]
@@ -127,57 +159,44 @@ Scale & Best Model & Accuracy & Precision (w) & Recall (w) & F1 (w) \\
 20k\_2k & SVM & 0.8955 & 0.8958 & 0.8955 & 0.8954 \\
 \bottomrule
 \end{tabular}
-\caption{Best embedding model per scale from \texttt{reports/tables/bert\_benchmark\_summary.csv}.}
+\caption{Best embedding model per scale.}
 \end{table}
 
 \subsection{Feature-Family Comparison}
-The final comparison between best TF-IDF and best embedding model shows:
-\begin{itemize}[leftmargin=*]
-    \item Best TF-IDF: SVM with F1-weighted = 0.9044.
-    \item Best embedding: SVM at 20k\_2k with F1 = 0.8954.
-\end{itemize}
-Therefore, TF-IDF + SVM is selected as the final recommendation for this dataset and setup.
-
-\section{Artifact Outputs}
-The project exports reproducible artifacts under \texttt{features/} and \texttt{reports/}, including:
-\begin{itemize}[leftmargin=*]
-    \item Feature arrays (TF-IDF and SBERT) in \texttt{.npy} format.
-    \item Confusion matrices for all TF-IDF models.
-    \item Benchmark and comparison CSV tables.
-    \item Workflow logs, critic report, and reporter summary.
-\end{itemize}
-
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.65\linewidth]{figures/cm_svm.png}
-    \caption{Confusion matrix of best TF-IDF model (SVM).}
+    \includegraphics[width=0.85\linewidth]{figures/comparison_tfidf_vs_embedding.png}
+    \caption{Performance Comparison: TF-IDF vs SBERT Embedding}
 \end{figure}
+
+The final comparison shows that the best TF-IDF model (SVM with F1 = 0.9044) outperforms the best SBERT embedding model (SVM at 20k scale with F1 = 0.8954). TF-IDF is significantly faster to train and extract, while maintaining highly interpretable sparse features. Therefore, TF-IDF + SVM is the primary recommendation.
+
+\section{Error Analysis}
+An error analysis was performed on the best TF-IDF model (SVM) to understand the distribution of misclassifications. Out of 7,600 test samples, the SVM model made 381 errors.
+
+The top 3 most common confusion pairs are:
+\begin{enumerate}
+    \item \textbf{True: Business $\rightarrow$ Predicted: Sci/Tech} (73 occurrences)
+    \item \textbf{True: Business $\rightarrow$ Predicted: World} (49 occurrences)
+    \item \textbf{True: World $\rightarrow$ Predicted: Sci/Tech} (44 occurrences)
+\end{enumerate}
+This indicates a semantic overlap between Business/Technology news and Business/World news, which is common in articles discussing international tech corporations or global markets.
 
 \section{Team Contributions}
 \begin{table}[H]
 \centering
-\begin{tabularx}{\linewidth}{l c X c}
+\begin{tabularx}{\linewidth}{l c l X c}
 \toprule
-Member & ID & Main Contribution & \% \\
+Member & ID & Email & Main Contribution & \% \\
 \midrule
-Tran Hoang Vy Khang & 2352502 & Embedding benchmark, integrated workflow, final comparison and outputs & 30 \\
-Le Tan Minh Khoa & 2352563 & Text cleaning and TF-IDF feature engineering & 20 \\
-Tao Nguyen Quang Khang & 2352499 & Classical model training and evaluation on TF-IDF & 20 \\
-Tran Gia Huy & 2252264 & Pipeline/configuration support and reproducibility structure & 15 \\
-Vo Le Hai Dang & 2352257 & Data loading and EDA notebook analysis & 15 \\
+Tran Hoang Vy Khang & 2352502 & 2352502@hcmut.edu.vn & Embeddings, workflow, integration & 30 \\
+Le Tan Minh Khoa & 2352563 & 2352563@hcmut.edu.vn & Text cleaning and TF-IDF & 20 \\
+Tao Nguyen Quang Khang & 2352499 & 2352499@hcmut.edu.vn & ML training and evaluation & 20 \\
+Tran Gia Huy & 2252264 & 2252264@hcmut.edu.vn & Pipeline and config architecture & 15 \\
+Vo Le Hai Dang & 2352257 & 2352257@hcmut.edu.vn & Data loading and EDA analysis & 15 \\
 \bottomrule
 \end{tabularx}
-\caption{Detailed contribution table (sum = 100\%).}
+\caption{Detailed contribution table with student emails.}
 \end{table}
-
-\section{Conclusion}
-The required course targets were completed:
-\begin{itemize}[leftmargin=*]
-    \item Complete traditional ML pipeline implemented and validated.
-    \item Modern embedding extension benchmarked at multiple scales.
-    \item Direct TF-IDF vs embedding comparison produced.
-    \item Automated planner-runner-critic-reporter workflow built for reproducibility.
-\end{itemize}
-Final recommendation: use TF-IDF with SVM as the primary baseline for AG News in this project.
 
 \end{document}
