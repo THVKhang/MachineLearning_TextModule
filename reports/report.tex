@@ -227,17 +227,17 @@ Key findings include:
 \section{Implemented Methodology}
 \subsection{Traditional Pipeline}
 \begin{itemize}[leftmargin=*]
-    \item Preprocessing options: lowercasing, stopword removal, punctuation removal, number removal.
-    \item TF-IDF configuration search over three candidates: \texttt{tfidf\_uni\_1k}, \texttt{tfidf\_uni\_bi\_3k}, and \texttt{tfidf\_uni\_bi\_5k}.
-    \item Primary model-selection metric: F1-weighted.
-    \item Trained models: Logistic Regression, SVM, Naive Bayes.
+    \item \textbf{Preprocessing:} Data cleaning, handling missing values, and tokenization (lowercasing, stopword removal, punctuation removal, number removal).
+    \item \textbf{Feature Extraction:} Traditional methods evaluated include TF-IDF configuration search over three candidates: \texttt{tfidf\_uni\_1k}, \texttt{tfidf\_uni\_bi\_3k}, and \texttt{tfidf\_uni\_bi\_5k}.
+    \item \textbf{Evaluation:} Performance metrics evaluated include Accuracy, Precision, Recall, and F1-score (weighted). Primary model-selection metric: F1-weighted.
+    \item \textbf{Model Training:} Supervised Learning algorithms utilized include Logistic Regression, SVM, and Naive Bayes.
 \end{itemize}
 
 \subsection{Modern Embedding Extension}
 \begin{itemize}[leftmargin=*]
-    \item Embedding model: \texttt{sentence-transformers/all-MiniLM-L6-v2}.
+    \item \textbf{Feature Extraction:} Modern Contextual Embeddings evaluated using \texttt{sentence-transformers/all-MiniLM-L6-v2} (a BERT-based model).
     \item Benchmark scales: \texttt{5k\_2k} and \texttt{20k\_2k}.
-    \item Embeddings and labels are exported to \texttt{.npy} artifacts.
+    \item Numerical Features: All embeddings and labels are exported and serialized as \texttt{.npy} artifacts.
 \end{itemize}
 
 \section{Results}
@@ -299,7 +299,7 @@ Scale & Best Model & Accuracy & Precision (w) & Recall (w) & F1 (w) \\
     \caption{Performance Comparison: TF-IDF vs SBERT Embedding}
 \end{figure}
 
-The final comparison shows that the best TF-IDF model (SVM with F1 = 0.9044) outperforms the best SBERT embedding model (SVM at 20k scale with F1 = 0.8954). TF-IDF is significantly faster to train and extract, while maintaining highly interpretable sparse features. Therefore, TF-IDF + SVM is the primary recommendation.
+The final Comparative Analysis shows that the best TF-IDF model (SVM with F1 = 0.9044) marginally outperformed the best Transformer-based contextual embedding model (SVM at 20k scale with F1 = 0.8954). The Transformer-based model underperformed the traditional SVM baseline in this specific context because the AG News dataset consists of very short texts (average 35 words) with highly distinct, domain-specific vocabularies (e.g., "stock", "baseball"). Traditional TF-IDF excels at capturing these explicit keyword signals without requiring complex semantic relationships. Furthermore, TF-IDF is significantly faster to train and extract, while maintaining highly interpretable sparse features. Therefore, TF-IDF + SVM is the primary recommendation.
 
 \section{Error Analysis}
 An error analysis was performed on the best TF-IDF model (SVM) to understand the distribution of misclassifications. Out of 7,600 test samples, the SVM model made 381 errors.
