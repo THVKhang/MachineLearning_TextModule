@@ -256,6 +256,8 @@ Naive Bayes & 0.8871 & 0.8866 & 0.8871 & 0.8867 \\
 \caption{TF-IDF model comparison.}
 \end{table}
 
+\textbf{Analysis of TF-IDF Performance:} Table 1 outlines the performance of the three evaluated supervised learning models on the traditional TF-IDF sparse features using the full dataset. Support Vector Machine (SVM) achieves the highest performance across all metrics (F1 = 0.9044), demonstrating its strong capability to find optimal separating hyperplanes in high-dimensional lexical spaces. Logistic Regression closely follows (F1 = 0.9036), providing a well-calibrated probabilistic alternative. Naive Bayes lags behind, likely due to its strict feature independence assumption which does not hold perfectly in natural language.
+
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.32\textwidth}
@@ -300,6 +302,8 @@ Scale & Best Model & Accuracy & Precision (w) & Recall (w) & F1 (w) \\
 \caption{Best embedding model per scale.}
 \end{table}
 
+\textbf{Analysis of SBERT Performance:} Table 2 presents the results of the modern contextual embedding benchmark using the SBERT transformer model. At the smaller 5k scale, Logistic Regression performs best, achieving an F1 score of 0.8736. However, as the dataset scale increases to 20k, SVM surpasses it, reaching an F1 score of 0.8954. This highlights that while modern embeddings provide dense semantic representations, they require sufficient data volume and margin-based classifiers (like SVM) to establish clear decision boundaries that can rival traditional methods.
+
 \subsection{Feature-Family Comparison}
 \begin{figure}[H]
     \centering
@@ -329,11 +333,11 @@ The top 3 most common confusion pairs extracted from the prediction logs are:
 \toprule
 Member & ID & Email & Main Contribution & \% \\
 \midrule
-Tran Hoang Vy Khang & 2352502 & khang.tran2106@hcmut.edu.vn & Embeddings, workflow, integration & 30 \\
-Le Tan Minh Khoa & 2352563 & - & Text cleaning and TF-IDF & 20 \\
-Tao Nguyen Quang Khang & 2352499 & - & ML training and evaluation & 20 \\
-Tran Gia Huy & 2252264 & - & Pipeline and config architecture & 15 \\
-Vo Le Hai Dang & 2352257 & - & Data loading and EDA analysis & 15 \\
+Tran Hoang Vy Khang & 2352502 & khang.tran2106@hcmut.edu.vn & Embeddings, workflow, integration & 100 \\
+Le Tan Minh Khoa & 2352563 & - & Text cleaning and TF-IDF & 100 \\
+Tao Nguyen Quang Khang & 2352499 & - & ML training and evaluation & 100 \\
+Tran Gia Huy & 2252264 & - & Pipeline and config architecture & 100 \\
+Vo Le Hai Dang & 2352257 & - & Data loading and EDA analysis & 100 \\
 \bottomrule
 \end{tabularx}
 \caption{Detailed contribution table with student emails.}
