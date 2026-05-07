@@ -1,4 +1,6 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+import os
+
+preamble = r'''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                               PREAMBLE                             %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[a4paper,12pt]{article}
@@ -156,7 +158,9 @@
 \newpage
 \tableofcontents
 \newpage
+'''
 
+body = r'''
 \section{Course Context}
 \begin{itemize}[leftmargin=*]
     \item Course: Machine Learning (CO3117)
@@ -455,3 +459,9 @@ Vo Le Hai Dang & 2352257 & - & Data loading and EDA analysis & 100 \\
 \end{table}
 
 \end{document}
+'''
+
+with open('reports/report.tex', 'w', encoding='utf-8') as f:
+    f.write(preamble + body)
+
+print('Done')
